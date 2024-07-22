@@ -58,7 +58,7 @@ static char *ft_take_word(char const *s, char c)
             return (NULL);
         while (len--)
             word[++i] = *s++;
-        word[++i] == '\0';
+        word[++i] = '\0';
     }
     return (word);
 }
