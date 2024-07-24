@@ -18,8 +18,8 @@ static int  steps(t_data *data, t_point *inter, t_point *incr)
     double       d_y;
     double       steps;
 
-    d_x = (inter->x - data->plr.x) / 4.0;
-    d_y = (inter->y - data->plr.y) / 4.0;
+    d_x = (inter->x - data->plr.x) / data->fact;
+    d_y = (inter->y - data->plr.y) / data->fact;
     steps = fabs(d_x);
     if (fabs(d_x) < fabs(d_y))
         steps = fabs(d_y);

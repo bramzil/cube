@@ -46,7 +46,7 @@ static double get_height(t_data *data, int i)
 
     adja = fabs(data->plr.x - data->array[i].x);
     oppo = fabs(data->plr.y - data->array[i].y);
-    result = ((300 * 100) / sqrt((oppo * oppo) + \
+    result = ((300 * 300) / sqrt((oppo * oppo) + \
         (adja * adja)));
     return (result);
 } 
@@ -91,7 +91,8 @@ void    ft_create_list(t_data *data)
             ((data->array[i].y != tmp->y_ref) && (tmp->fix = 1));
             if (tmp->height_1 == -1)
                 tmp->height_1 = get_height(data, i);
-            if ((i == 759) || (data->array[i + 1].x != tmp->x_ref))
+            if ((i == (data->wnd_wd - 1)) || \
+                (data->array[i + 1].x != tmp->x_ref))
                 tmp->height_2 = get_height(data, i);
         }
         else

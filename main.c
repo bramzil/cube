@@ -16,7 +16,7 @@ int32_t *get_texture(int width, int height)
         i = -1;
         while (++i < width)
         {
-            if ((i % 5 == 0) || (j % 5 == 0))
+            if ((i % 40 == 0) || (j % 40 == 0))
                 texture[(j * width) + i] = 0x000000ff;
             else
                 texture[(j * width) + i] = 0xC19A6Bff;
@@ -116,16 +116,17 @@ int main()
                     1000000011 1010110001 1000000001 \
                     1111111111";
 
+    data.fact = 16.0;
     data.plr.d = 0;
-    data.plr.x = 70;
-    data.plr.y = 70;
-    data.grd_ht = 64;
-    data.grd_wd = 64;
+    data.plr.x = 370;
+    data.plr.y = 370;
+    data.grd_ht = 256;
+    data.grd_wd = 256;
     data.wnd_ht = 700;
     data.wnd_wd = 1100;
     data.map = ft_split(map, ' ');
-    data.texture.wd = 64;
-    data.texture.ht = 64;
+    data.texture.wd = 256;
+    data.texture.ht = 256;
     data.texture.tb = get_texture(data.grd_wd, data.grd_ht);
     if (!data.map)
         return (printf("ft_split fails!!\n"));

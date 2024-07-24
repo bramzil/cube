@@ -49,6 +49,7 @@ typedef struct  s_data
     int             grd_ht;
     int             grd_wd;
     t_plr           plr;
+    double          fact;
     mlx_t           *mlx;
     t_point         *array;
     t_texture       texture;
@@ -60,11 +61,11 @@ typedef struct  s_data
 
 double      real_angle(double angle);
 int         ft_mini_map(t_data *data);
-void        ft_drop_rays(t_data *data);
+void        ft_cast_rays(t_data *data);
 void        ft_render_wall(t_data *data);
 void        ft_create_list(t_data *data);
 char        **ft_split(char const *s, char c);
-mlx_keyfunc ft_move_plr(mlx_key_data_t key, t_data *data);
+void        ft_move_plr(mlx_key_data_t key, void *arg);
 double      ft_get_inter(t_data *data, t_point *inter, double angle);
 
 # endif
