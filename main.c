@@ -25,20 +25,46 @@ int32_t *get_texture(int width, int height)
     return (texture);
 }
 
-// void    ft_fill_img(mlx_image_t *img)
-// {
-//     int     i;
-//     int     j;
+static int  ft_draw_cercle(mlx_image_t *img, double i, double j)
+{
+    double      x;
+    double      y;
+    double      incr;
+    double      angle;
+    int         raduis;
 
-//     j = 0;
-//     i = -1;
-//     while ((++i < img->width) && (j < img->height))
-//     {
-//         mlx_put_pixel(img, i, j, 0xff0000aa);
-//         if ((i + 1) == img->width)
-//             (i = -1, j++);
-//     }
-// }
+    raduis = -1;
+    incr = ((2 * M_PI) / 360);
+    while (++raduis < 3)
+    {
+        angle = 0;
+        while (angle < (2 * M_PI))
+        {
+            x = i + (raduis * cos(angle));
+            y = j + (raduis * sin(angle));
+            mlx_put_pixel(img, x, y, 0x0000ffff);
+            angle += incr;
+        }
+    }
+    return (0);
+}
+
+void    ft_fill_img(t_data *data, mlx_image_t *img)
+{
+    int     i;
+    int     j;
+
+    j = 0;
+    i = -1;
+    while ((++i < img->width) && (j < img->height))
+    {
+        mlx_put_pixel(img, i, j, 0xffffff70);
+        if ((i + 1) == img->width)
+            (i = -1, j++);
+    }
+    ft_draw_cercle(data->wall_img, (data->wall_img->width / 2), \
+        (data->wall_img->height / 2));
+}
 
 // static int ft_mini_map(t_data *data)
 // {
@@ -65,8 +91,7 @@ int ft_create_window(t_data  *data)
     if (!(data->mlx = mlx_init(data->wnd_wd, data->wnd_ht, \
         "cube", 0)))
         return (printf("data->mlx fails!!\n"));
-    if (!(data->wall_img = mlx_new_image(data->mlx, \
-        data->grd_wd, data->grd_ht)))
+    if (!(data->wall_img = mlx_new_image(data->mlx, 120, 120)))
         return (printf("data->wall_img fails!!\n"));
     if (!(data->rays_img = mlx_new_image(data->mlx, 120, 120)))
         return (printf("data->rays_img fails!!\n"));
@@ -75,8 +100,11 @@ int ft_create_window(t_data  *data)
         return (printf("data->ddd__img fails!!\n"));
     if (mlx_image_to_window(data->mlx, data->ddd__img, 0, 0))
         return (printf("data->ddd__img fails!!\n"));
+    if (mlx_image_to_window(data->mlx, data->wall_img, 0, 0))
+        return (printf("data->wall__img fails!!\n"));
     if (mlx_image_to_window(data->mlx, data->rays_img, 0, 0))
         return (printf("data.rays_img fails!!\n"));
+    ft_fill_img(data, data->wall_img);
     return (0);
 }
 
@@ -98,7 +126,7 @@ int main()
     data.grd_ht = 20;
     data.grd_wd = 20;
     data.wnd_ht = 700;
-    data.wnd_wd = 760;
+    data.wnd_wd = 1100;
     data.map = ft_split(map, ' ');
     data.texture.wd = 20;
     data.texture.ht = 20;

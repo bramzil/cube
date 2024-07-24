@@ -32,6 +32,8 @@ static int ft_draw_line(t_data *data, t_point *inter)
 {
     int         i;
     int         end;
+    double      adja;
+    double      oppo;
     t_point     incr;
     t_point     start;
 
@@ -45,13 +47,14 @@ static int ft_draw_line(t_data *data, t_point *inter)
             start.y, 0xffff00aa);
         start.x += incr.x;
         start.y += incr.y;
-        if (15 <= (fabs(start.x - 60) + fabs(start.y - 60)))
+        if ((start.x < 0) || (119 < start.x) || \
+            (start.y < 0) || (119 < start.y))
             break ;
     }
     return (0);
 }
 
-void    ft_drop_rays(t_data *data)
+void    ft_cast_rays(t_data *data)
 {
     int      x;
     double   rad;

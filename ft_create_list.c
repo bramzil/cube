@@ -55,12 +55,12 @@ static int create_sub_fun(t_data *data, t_face **tmp, int i)
 {
     if (((*tmp)->fix == 1) && (data->array[i].x == (*tmp)->x_ref))
     {   
-        if ((i == 759) || (data->array[i + 1].x != (*tmp)->x_ref))
+        if ((i == (data->wnd_wd - 1)) || (data->array[i + 1].x != (*tmp)->x_ref))
             (*tmp)->height_2 = get_height(data, i);
     }
     else if (((*tmp)->fix == 2) && (data->array[i].y == (*tmp)->y_ref))
     {   
-        if ((i == 759) || ( data->array[i + 1].y != (*tmp)->y_ref))
+        if ((i == (data->wnd_wd - 1)) || ( data->array[i + 1].y != (*tmp)->y_ref))
             (*tmp)->height_2 = get_height(data, i);
     }
     else
@@ -83,7 +83,7 @@ void    ft_create_list(t_data *data)
     tmp = ft_create_node(data->array[0].x, \
         data->array[0].y);
     data->face_lst = tmp;
-    while (++i < 760)
+    while (++i < data->wnd_wd)
     {
         if (tmp->fix == 0)
         {

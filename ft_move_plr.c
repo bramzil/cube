@@ -16,10 +16,14 @@ void    ft_clear_image(mlx_image_t *img)
 
 static int  ft_check_next(t_data *data, double x, double y)
 {
-    if ((data->map[(int)((y + 3) / data->grd_ht)][(int)(x / data->grd_wd)] == '1') || \
-        (data->map[(int)((y - 3) / data->grd_ht)][(int)(x / data->grd_wd)] == '1') || \
-        (data->map[(int)(y / data->grd_ht)][(int)((x + 3) / data->grd_wd)] == '1') || \
-        (data->map[(int)(y / data->grd_ht)][(int)((x - 3) / data->grd_wd)] == '1'))
+    if ((data->map[(int)((y + 3) / data->grd_ht)][(int)(x / \
+        data->grd_wd)] == '1') || \
+        (data->map[(int)((y - 3) / data->grd_ht)][(int)(x / \
+        data->grd_wd)] == '1') || \
+        (data->map[(int)(y / data->grd_ht)][(int)((x + 3) / \
+        data->grd_wd)] == '1') || \
+        (data->map[(int)(y / data->grd_ht)][(int)((x - 3) / \
+        data->grd_wd)] == '1'))
         return (1);
     return (0);
 }
@@ -75,12 +79,12 @@ mlx_keyfunc ft_move_plr(mlx_key_data_t key, t_data *data)
         ft_for_back_ward(data, key.key);
     else if (key.key == 262)
         data->plr.d = real_angle(data->plr.d - \
-            (double)(5 * (M_PI / 180)));
+            (double)(3 * (M_PI / 180)));
     else if (key.key == 263)
         data->plr.d = real_angle(data->plr.d + \
-            (double)(5 * (M_PI / 180)));
+            (double)(3 * (M_PI / 180)));
     ft_clear_image(data->rays_img);
     ft_clear_image(data->ddd__img);
-    ft_drop_rays(data);
+    ft_cast_rays(data);
     return (0);
 }

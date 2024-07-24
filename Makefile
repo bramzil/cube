@@ -4,7 +4,7 @@ SRCS			= 	main.c \
 					ft_split.c \
 					ft_move_plr.c \
 					ft_mini_map.c \
-					ft_drop_rays.c \
+					ft_cast_rays.c \
 					ft_rendering.c \
 					ft_intersection.c \
 					ft_create_list.c
