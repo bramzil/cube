@@ -5,55 +5,58 @@
 # include <math.h>
 # include <stdlib.h>
 # include <stdio.h>
-# include "MLX42/MLX42.h"
+# include <MLX42.h>
+# include <stdarg.h>
 
-typedef struct      s_point
+typedef struct  s_point
 {
-    double          x;
-    double          y;
-}                   t_point;
+    double         x;
+    double         y;
+}               t_point;
+
 
 typedef struct  s_face
 {
-    int             i;
-    int             j;
+    char            dir;
+    int             fix;
     int             rays;
+    double          x_ref;
+    double          y_ref;
     double          height_1;
     double          height_2;
-    double          step;
     struct s_face   *next;
-}                   t_face;
-
-typedef struct      s_line
-{
-    double          x;
-    double          y;
-    double          inc_x;
-    double          inc_y;   
-}                   t_line;
+}                 t_face;
 
 typedef struct  s_plr
 {
-    int             d;
+    double          d;
     double          x;
     double          y;
-}                   t_plr;
+}               t_plr;
 
 typedef struct  s_data
 {
     char            **map;
+    int             wd_ht;
+    int             wd_wh;
+    int             tl_ht;
+    int             tl_wd;
     t_plr           *plr;
     mlx_t           *mlx;
     t_point         *array;
     t_face          *face_lst;
+    int32_t         *texture;
     mlx_image_t     *rays_img;
     mlx_image_t     *wall_img;
-    mlx_image_t     *img_3d;
+    mlx_image_t     *ddd__img;
 }               t_data;
 
+double      real_angle(double angle);
 void        ft_drop_rays(t_data *data);
+void        ft_render_wall(t_data *data);
+void        ft_create_list(t_data *data);
 char        **ft_split(char const *s, char c);
 mlx_keyfunc ft_move_plr(mlx_key_data_t key, t_data *data);
-int         ft_render_line(t_data *data, double dst, double x);
+double      ft_get_inter(t_data *data, t_point *inter, double angle);
 
 # endif

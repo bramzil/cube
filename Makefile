@@ -4,8 +4,9 @@ SRCS			= 	main.c \
 					ft_split.c \
 					ft_move_plr.c \
 					ft_drop_rays.c \
-					ft_render_3d.c
-
+					ft_rendering.c \
+					ft_intersection.c \
+					ft_create_list.c
 
 ######################### object files ###############################
 
@@ -15,9 +16,7 @@ OBJS			= $(SRCS:%c=%o)
 
 NAME			= cube
 
-LINK			= -framework Cocoa -framework OpenGL -framework IOKit
-
-LIBS			= MLX42/libmlx42.a -lglfw3
+LINK			= -lmlx42 -lglfw -lm
 
 ############################# rules ###################################
 
@@ -27,7 +26,7 @@ o%				: %c cube.h
 	gcc -c $< -o $@
 
 $(NAME)			: $(OBJS)
-	gcc $(OBJS)  -o $(NAME) $(LINK) $(LIBS) -Ofaster
+	gcc $(OBJS) $(LINK) -o $(NAME) -Ofaster
 
 clean			:
 	rm -rf *o

@@ -1,77 +1,78 @@
 # include "cube.h"
 
-static int  ft_is_wall(t_data *data, double x, double y)
+double  real_angle(double angle)
 {
-    if ((data->map[(int)((y + 1) / 20)][(int)(x / 20)] == '1') || \
-        (data->map[(int)((y - 1) / 20)][(int)(x / 20)] == '1') || \
-        (data->map[(int)(y / 20)][(int)((x + 1) / 20)] == '1') || \
-        (data->map[(int)(y / 20)][(int)((x - 1) / 20)] == '1'))
-        return (1);
-    return (0);
+    double      two_pi;
+
+    two_pi = 2 * M_PI;
+    if (angle < 0)
+        angle += two_pi;
+    else if (two_pi <= angle)
+        angle -= two_pi;
+    return (angle);
 }
 
-
-static void  ft_get_steps(t_data *data, t_line *line, double angle)
+static int  steps(t_data *data, t_point *inter, t_point *incr)
 {
     double       d_x;
     double       d_y;
     double       steps;
 
-    d_x = 20 * cos(angle);
-    d_y = 20 * sin(angle * -1);
+    d_x = inter->x - data->plr->x;
+    d_y = inter->y - data->plr->y;
     steps = fabs(d_x);
     if (fabs(d_x) < fabs(d_y))
         steps = fabs(d_y);
-    line->inc_x = (double)(d_x / steps);
-    line->inc_y = (double)(d_y / steps);
+    incr->x = d_x / steps;
+    incr->y = d_y / steps;
+    return (steps);
 }
 
-static double ft_draw_line(t_data *data, double angle, int i)
+static int ft_draw_line(t_data *data, t_point *inter)
 {
-    double         oppo;
-    double         adja;
-    t_line         line;
+    int         i;
+    int         end;
+    t_point     incr;
+    t_point     start;
 
-    line.x = data->plr->x;
-    line.y = data->plr->y;
-    ft_get_steps(data, &line, angle);
-    while ((0 < line.x) && (line.x < 200) && \
-        (0 < line.y) && (line.y < 200))
+    i = -1;
+    start.x = data->plr->x;
+    start.y = data->plr->y;
+    end = steps(data, inter, &incr);
+    while (++i < end)
     {
-        if (ft_is_wall(data, line.x, line.y))
-            break ;
-        mlx_put_pixel(data->rays_img, line.x, \
-            line.y, 0xffff000f);
-        line.x += line.inc_x;
-        line.y += line.inc_y;
+        mlx_put_pixel(data->rays_img, start.x, \
+            start.y, 0xffff00aa);
+        start.x += incr.x;
+        start.y += incr.y;
     }
-    data->array[i].x = line.x;
-    data->array[i].y = line.y; 
-    oppo = fabs(data->plr->x - line.x);
-    adja = fabs(data->plr->y - line.y);
-    return (sqrt((oppo * oppo) + (adja * adja)));
+    return (0);
 }
 
 void    ft_drop_rays(t_data *data)
 {
-    double  x;
-    double  dst;
-    double  incr;
-    double  start;
-    double  rad;
+    int      x;
+    double   rad;
+    double   dst;
+    double   incr;
+    double   angle;
+    t_point  inter;
 
-    x = 760;
+    x = data->wd_wh;
     rad = (M_PI / 180);
-    incr = ((60 * rad) / 760);
-    start = ((data->plr->d - 30) + 360 * \
-        (data->plr->d - 30 < 0)) * rad;
-    while (0 <= --x)
+    incr = ((60 * rad) / data->wd_wh);
+    angle = real_angle(data->plr->d - \
+        (30 * rad));
+    while (x--)
     {
-        dst = ft_draw_line(data, start, x);
-        ft_render_line(data, dst, x);
-        start += incr;
+        angle = real_angle(angle);
+        dst = ft_get_inter(data, &inter, angle);
+        data->array[x].x = inter.x;
+        data->array[x].y = inter.y;
+        if (x % 10 == 0)
+            ft_draw_line(data, &inter);
+        angle += incr;
     }
-    int i = -1;
-    while (++i < 760)
-        printf("point: %d, x: %f, y: %f\n", i, data->array[i].x, data->array[i].y);
+    ft_create_list(data);
+    ft_render_wall(data);
 }
