@@ -27,14 +27,21 @@ int ft_free_lst(t_face *lst)
 
 double get_height(t_data *data, int i)
 {
+    double      dst;
+    double      unit;
     double      oppo;
     double      adja;
+    double      ray_angle;
     double      result;
 
+    unit = (60.0 * (M_PI / 180.0)) / data->wnd_wd;
+    ray_angle = real_angle(fabs((data->wnd_wd / \
+        2.0) - i) * unit);
     adja = fabs(data->plr.x - data->array[i].x);
     oppo = fabs(data->plr.y - data->array[i].y);
-    result = ((300 * 200) / sqrt((oppo * oppo) + \
-        (adja * adja)));
+    dst = sqrt((oppo * oppo) + (adja * adja)) * \
+        cos(ray_angle);
+    result = ((300.0 * 200.0) / dst);
     return (result);
 } 
 

@@ -125,6 +125,9 @@ int main()
     data.grd_wd = 64;
     data.wnd_ht = 700;
     data.wnd_wd = 1100;
+    data.door.var = 32;
+    data.door.state = 'c';
+    data.door.counter = 100;
     data.map = ft_split(map, ' ');
     data.w_text.wd = 64;
     data.w_text.ht = 64;
@@ -141,6 +144,7 @@ int main()
         return (-1);
     mlx_key_hook(data.mlx, ft_move_plr, &data);
     ft_mini_map(&data);
+    mlx_loop_hook(data.mlx, ft_door_ctl, &data);
     mlx_loop(data.mlx);
     return (0);
 }

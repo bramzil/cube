@@ -59,10 +59,10 @@ static int  ft_render_line(t_data *data, t_face *tmp, int x)
 
     indices(data, tmp, ind, x);
     x_offset = get_x_offset(data, tmp, x);
-    y = (data->wnd_ht / 2) - (tmp->height_1 / 2);
+    y = (data->wnd_ht / 2.0) - (tmp->height_1 / 2.0);
     top = y;
     pixel_pos.x = x;
-    while (y < ((data->wnd_ht / 2) + (tmp->height_1 / 2)))
+    while (y < ((data->wnd_ht / 2.0) + (tmp->height_1 / 2.0)))
     {
         y_offset = (int)((y - top) * \
             (data->grd_ht / tmp->height_1));

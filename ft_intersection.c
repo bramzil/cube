@@ -21,9 +21,11 @@ static int  is_wall(t_data *dt, t_point *p, int x_d, int y_d)
         return (1);
     else if (dt->map[j][i] == 'd')
     {
-        if ((x_d) && (p->y < ((j * dt->grd_ht + 64) - 60)))
+        if ((x_d) && (((p->y < (j * dt->grd_ht + dt->door.var)) || \
+            (((j * dt->grd_ht + 64) - dt->door.var) < p->y))))
             return (1);
-        else if ((y_d) && (p->x < ((i * dt->grd_wd + 64) - 60)))
+        else if ((y_d) && ((p->x < (i * dt->grd_wd + dt->door.var)) || \
+            (((i * dt->grd_wd + 64) - dt->door.var) < p->x)))
             return (1);
     }
     return (0);
@@ -79,20 +81,24 @@ static double ver_inter(t_data *data, t_point *inter, double angle)
     return (sqrt((agle.x * agle.x) + (agle.y * agle.y)));
 }
 
-double  ft_get_inter(t_data *data, t_point *inter, double angle)
+void  ft_inter(t_data *dt, t_point *inter, double angle)
 {
     t_point     hypo;
     t_point     h_inter;
     t_point     v_inter;
 
-    hypo.x = hor_inter(data, &h_inter, angle);
-    hypo.y = ver_inter(data, &v_inter, angle);
+    hypo.x = hor_inter(dt, \
+        &h_inter, angle);
+    hypo.y = ver_inter(dt, \
+        &v_inter, angle);
     if (hypo.x <= hypo.y)
     {
-        (inter->x = h_inter.x, inter->y = h_inter.y);
-        return (hypo.x);
+        inter->x = h_inter.x;
+        inter->y = h_inter.y; 
     }
     else
-        (inter->x = v_inter.x, inter->y = v_inter.y);
-    return (hypo.y);
+    {
+        inter->x = v_inter.x;
+        inter->y = v_inter.y;
+    }
 }

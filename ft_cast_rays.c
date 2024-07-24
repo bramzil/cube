@@ -58,7 +58,6 @@ void    ft_cast_rays(t_data *data)
 {
     int      x;
     double   rad;
-    double   dst;
     double   incr;
     double   angle;
     t_point  inter;
@@ -71,7 +70,7 @@ void    ft_cast_rays(t_data *data)
     while (x--)
     {
         angle = real_angle(angle);
-        dst = ft_get_inter(data, &inter, angle);
+        ft_inter(data, &inter, angle);
         data->array[x].x = inter.x;
         data->array[x].y = inter.y;
         if (x % 10 == 0)
@@ -80,5 +79,4 @@ void    ft_cast_rays(t_data *data)
     }
     data->face_lst = ft_create_list(data);
     ft_render_wall(data);
-    ft_free_lst(data->face_lst);
 }
