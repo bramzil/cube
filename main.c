@@ -114,22 +114,18 @@ int main()
     char    *map = "1111111111 1000000001 1000010101 \
                     1100000001 1010110101 1010000001 \
                     1000000011 1010110001 1000000001 \
-                    1000000011 1010110001 1000000001 \
-                    1000000011 1010110001 1000000001 \
-                    1000000011 1010110001 1000000001 \
-                    1000000011 1010110001 1000000001 \
                     1111111111";
 
     data.plr.d = 0;
-    data.plr.x = 30;
-    data.plr.y = 30;
-    data.grd_ht = 20;
-    data.grd_wd = 20;
+    data.plr.x = 70;
+    data.plr.y = 70;
+    data.grd_ht = 64;
+    data.grd_wd = 64;
     data.wnd_ht = 700;
     data.wnd_wd = 1100;
     data.map = ft_split(map, ' ');
-    data.texture.wd = 20;
-    data.texture.ht = 20;
+    data.texture.wd = 64;
+    data.texture.ht = 64;
     data.texture.tb = get_texture(data.grd_wd, data.grd_ht);
     if (!data.map)
         return (printf("ft_split fails!!\n"));
