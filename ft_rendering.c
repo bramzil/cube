@@ -7,19 +7,19 @@ static int  ft_render_line(t_data *data, t_face *tmp, double x)
     int         x_offset;
     int         y_offset;
 
-    y = (data->wd_ht / 2) - (tmp->height_1 / 2);
+    y = (data->wnd_ht / 2) - (tmp->height_1 / 2);
     top = y;
     if (tmp->fix == 1)
-        x_offset = (int)((int)data->array[(int)x].y % data->tl_ht);
+        x_offset = (int)((int)data->array[(int)x].y % data->grd_ht);
     else
-        x_offset = (int)((int)data->array[(int)x].x % data->tl_wd);
-    while (y < ((data->wd_ht / 2) + (tmp->height_1 / 2)))
+        x_offset = (int)((int)data->array[(int)x].x % data->grd_wd);
+    while (y < ((data->wnd_ht / 2) + (tmp->height_1 / 2)))
     {
         y_offset = (int)((y - top) * \
-            (data->tl_ht / tmp->height_1));
-        if (0 < y && y < data->wd_ht)
+            (data->grd_ht / tmp->height_1));
+        if (0 < y && y < data->wnd_ht)
             mlx_put_pixel(data->ddd__img, \
-                x, y, data->texture[(data->tl_wd * \
+                x, y, data->texture.tb[(data->grd_wd * \
                     y_offset) + x_offset]);
         y++;
     }

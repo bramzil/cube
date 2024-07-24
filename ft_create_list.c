@@ -44,8 +44,8 @@ static double get_height(t_data *data, int i)
     double      adja;
     double      result;
 
-    adja = fabs(data->plr->x - data->array[i].x);
-    oppo = fabs(data->plr->y - data->array[i].y);
+    adja = fabs(data->plr.x - data->array[i].x);
+    oppo = fabs(data->plr.y - data->array[i].y);
     result = ((100 * 100) / sqrt((oppo * oppo) + \
         (adja * adja)));
     return (result);
