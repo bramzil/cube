@@ -40,10 +40,7 @@ typedef struct  s_face
     char            dir;
     char            fix;
     int             rays;
-    double          x_ref;
-    double          y_ref;
-    double          height_1;
-    double          height_2;
+    double          height;
     struct s_face   *next;
 }                t_face;
 
@@ -67,10 +64,11 @@ typedef struct  s_data
     mlx_image_t     *ddd__img;
 }               t_data;
 
+int         new_face(t_data *dt, t_face **tp, t_point *rf, int i);
 void        ft_move_plr(mlx_key_data_t key, void *arg);
-t_face      *new_node(double x_ref, double y_ref);
 int         ft_free_lst(t_face *lst);
-void        ft_door_ctl(t_data *data);
+void        ft_door_ctl(void *par);
+t_face      *new_node();
 int         ft_mini_map(t_data *data);
 void        ft_cast_rays(t_data *data);
 void        ft_clear_image(mlx_image_t *img);

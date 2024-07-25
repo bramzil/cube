@@ -32,10 +32,10 @@ LINK			= -lmlx42 -lglfw -lm
 all				: $(NAME)
 
 o%				: %c cube.h
-	gcc -c $< -o $@
+	gcc -c $< -o $@ -g -fsanitize=address
 
 $(NAME)			: $(OBJS)
-	gcc $(OBJS)  -o $(NAME) $(LINK)
+	gcc $(OBJS)  -o $(NAME) $(LINK) -g -fsanitize=address
 clean			:
 	rm -rf *o
 

@@ -1,7 +1,10 @@
 # include "cube.h"
 
-void ft_door_ctl(t_data *data)
+void ft_door_ctl(void *par)
 {
+    t_data      *data;
+
+    data = (t_data *)par;
     if (data->door.counter <= 0)
     {
         if (data->door.state == 'N')

@@ -12,90 +12,50 @@
 
 # include "cube.h"
 
-static int new_face(t_data *data, t_face **tmp, int i)
+static void set_dir(t_data *data, t_face *tmp, int i)
 {
-    (*tmp)->next = new_node(data->array[i].x, \
-        data->array[i].y);
-    if (!(*tmp)->next)
-        return (-1);
-    (*tmp) = (*tmp)->next;
-    return (0);
-}
-
-static int  update_x_face(t_data *data, t_face **tmp, int i)
-{   
-    int         y;
-    int         x;
-
-    x = (data->array[i].x / data->grd_wd);
-    y = (data->array[i].y / data->grd_ht);
-    if (data->array[i].x < data->plr.x)
-        ((*tmp)->dir = 'E', x--);
-    else if (data->array[i].x < data->plr.x)
-        (*tmp)->dir = 'W';
-    if ((i == (data->wnd_wd - 1)) || \
-        (data->array[i + 1].y != (*tmp)->y_ref))
-        (*tmp)->height_2 = get_height(data, i);
-    return (0);
-}
-
-static int  update_y_face(t_data *data, t_face **tmp, int i)
-{
-    int         x;
-    int         y;
-
-    x = (data->array[i].x / data->grd_wd);
-    y = (data->array[i].y / data->grd_ht);
-    if (data->array[i].y <  data->plr.y)
-        ((*tmp)->dir = 'N', y--);
-    else if (0 < (data->array[i].y - data->plr.y))
-        (*tmp)->dir = 'S';
-    if ((i == (data->wnd_wd - 1)) || \
-        (data->array[i + 1].y != (*tmp)->y_ref))
-        (*tmp)->height_2 = get_height(data, i);
-    return (0);
-}
-
-static void init_face(t_data *data, t_face *tmp, int i)
-{
-    int         x;
-    int         y;
-
-    x = data->array[i].x / data->grd_wd;
-    y = data->array[i].y / data->grd_ht;
-    if (data->array[i].x != tmp->x_ref)
-        tmp->fix = 'Y';
-    else if (data->array[i].y != tmp->y_ref)
-        tmp->fix = 'X';
-    if (tmp->height_1 == -1)
-        tmp->height_1 = get_height(data, i);
-    if (i == (data->wnd_wd - 1))
-        tmp->height_2 = get_height(data, i);
+    if (tmp->fix == 'Y')
+    {
+        if (data->array[i].y <  data->plr.y)
+            tmp->dir = 'N';
+        else if (0 < (data->array[i].y - data->plr.y))
+            tmp->dir = 'S';
+    }
+    else
+    {
+        if (data->array[i].x < data->plr.x)
+            tmp->dir = 'E';
+        else if (data->array[i].x < data->plr.x)
+            tmp->dir = 'W';
+    }
 }
 
 t_face  *ft_create_list(t_data *data)
 {
     int         i;
+    t_point     ref;
+    t_point     *arr;
     t_face      *tmp[2];
 
     i = -1;
-    tmp[0] = new_node(data->array[0].x, \
-        data->array[0].y);
+    tmp[0] = NULL;
+    new_face(data, &tmp[0], &ref, 0);
     tmp[1] = tmp[0];
+    arr = data->array;
     while (tmp[0] && (++i < data->wnd_wd))
     {
-        if (tmp[0]->fix == 'U')
-            init_face(data, tmp[0], i);
-        else if ((tmp[0]->fix == 'X') && \
-            (data->array[i].x == tmp[0]->x_ref))
-            update_x_face(data, &tmp[0], i);  
-        else if ((tmp[0]->fix == 'Y') && \
-            (data->array[i].y == tmp[0]->y_ref))
-            update_y_face(data, &tmp[0], i);
-        else if (new_face(data, &tmp[0], i))
+        if ((tmp[0]->fix == 'U') && (arr[i].y != ref.y))
+            tmp[0]->fix = 'X';
+        else if ((tmp[0]->fix == 'U') && (arr[i].x != ref.x))
+            tmp[0]->fix = 'Y';
+        else if (((arr[i].x != ref.x) || (arr[i].y != ref.y)) && \
+            new_face(data, &tmp[0], &ref, i))
             return (ft_free_lst(tmp[1]), NULL);
+        if ((tmp[0]->dir == 'U') && \
+            (((tmp[0]->fix == 'X') && (arr[i].x == ref.x)) || \
+            ((tmp[0]->fix == 'Y') && (arr[i].y == ref.y))))
+            set_dir(data, tmp[0], i);
         tmp[0]->rays++;
     }
     return (tmp[1]);
 }
-

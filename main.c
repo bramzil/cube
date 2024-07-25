@@ -128,6 +128,7 @@ int main()
     data.door.var = 32;
     data.door.state = 'c';
     data.door.counter = 100;
+    data.face_lst = NULL;
     data.map = ft_split(map, ' ');
     data.w_text.wd = 64;
     data.w_text.ht = 64;
