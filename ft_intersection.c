@@ -9,20 +9,18 @@ static void get_dir(double angle, int *x_dir, int *y_dir)
 
 static int  is_wall(t_data *data, t_point *point, int x_d, int y_d)
 {
-    int         grd_ht;
-    int         grd_wd;
-    char        **map;
+    int         i;
+    int         j;
 
-    map = data->map;
-    grd_ht = data->grd_ht;
-    grd_wd = data->grd_wd;
+    i = (point->x / data->grd_ht) - \
+        (1 * (x_d < 0));
+    j = (point->y / data->grd_wd) - \
+        (1 * (y_d < 0));
     if ((point->x < 0) || (point->y < 0) || \
         ((data->grd_wd * 10) < point->x) || \
         ((data->grd_ht * 10) < point->y))
-        return (0);
-    else if (map[(int)((point->y / grd_ht) - \
-        (1 * (y_d < 0)))][(int)((point->x / \
-            grd_wd) - (1 * (x_d < 0)))] == '1')
+        return (1);
+    else if (data->map[j][i] != '0')
         return (1);
     return (0);
 }

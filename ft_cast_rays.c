@@ -44,7 +44,7 @@ static int ft_draw_line(t_data *data, t_point *inter)
     while (++i < end)
     {
         mlx_put_pixel(data->rays_img, start.x, \
-            start.y, 0xffff00aa);
+            start.y, 0xffff0022);
         start.x += incr.x;
         start.y += incr.y;
         if ((start.x < 0) || (119 < start.x) || \
@@ -66,8 +66,7 @@ void    ft_cast_rays(t_data *data)
     x = data->wnd_wd;
     rad = (M_PI / 180);
     incr = ((60 * rad) / data->wnd_wd);
-    angle = real_angle(data->plr.d - \
-        (30 * rad));
+    angle = real_angle(data->plr.d - (30 * rad));
     ft_mini_map(data);
     while (x--)
     {
@@ -79,6 +78,7 @@ void    ft_cast_rays(t_data *data)
             ft_draw_line(data, &inter);
         angle += incr;
     }
-    ft_create_list(data);
+    data->face_lst = ft_create_list(data);
     ft_render_wall(data);
+    ft_free_lst(data->face_lst);
 }

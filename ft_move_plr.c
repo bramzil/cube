@@ -14,20 +14,6 @@ void    ft_clear_image(mlx_image_t *img)
     }
 }
 
-static int  ft_check_next(t_data *data, double x, double y)
-{
-    if ((data->map[(int)((y + 20) / data->grd_ht)][(int)(x / \
-        data->grd_wd)] == '1') || \
-        (data->map[(int)((y - 20) / data->grd_ht)][(int)(x / \
-        data->grd_wd)] == '1') || \
-        (data->map[(int)(y / data->grd_ht)][(int)((x + 20) / \
-        data->grd_wd)] == '1') || \
-        (data->map[(int)(y / data->grd_ht)][(int)((x - 20) / \
-        data->grd_wd)] == '1'))
-        return (1);
-    return (0);
-}
-
 static void ft_for_back_ward(t_data *data, int keycode)
 {
     double      x;
@@ -35,13 +21,13 @@ static void ft_for_back_ward(t_data *data, int keycode)
 
     if (keycode == 87)
     {
-        x = data->plr.x + (20 * cos(data->plr.d));
-        y = data->plr.y + (20 * sin(data->plr.d) * -1);
+        x = data->plr.x + (10 * cos(data->plr.d));
+        y = data->plr.y + (10 * sin(data->plr.d) * -1);
     }
     else if (keycode == 83)
     {
-        x = data->plr.x + (20 * cos(data->plr.d) * -1);
-        y = data->plr.y + (20 * sin(data->plr.d));
+        x = data->plr.x + (10 * cos(data->plr.d) * -1);
+        y = data->plr.y + (10 * sin(data->plr.d));
     }
     if (!ft_check_next(data, x, y))
         (data->plr.x = x, data->plr.y = y);
@@ -57,15 +43,15 @@ static void ft_go_left_right(t_data *data, int keycode)
     {
         angle = real_angle(data->plr.d + \
             (M_PI / 2));
-        x = data->plr.x + (double)(20 * cos(angle));
-        y = data->plr.y + (double)(20 * sin(angle) * -1);
+        x = data->plr.x + (double)(10 * cos(angle));
+        y = data->plr.y + (double)(10 * sin(angle) * -1);
     }
     else if (keycode == 68)
     {
         angle = real_angle(data->plr.d + \
             (M_PI + (M_PI / 2)));
-        x = data->plr.x + (double)(20 * cos(angle));
-        y = data->plr.y + (double)(20 * sin(angle) * -1);
+        x = data->plr.x + (double)(10 * cos(angle));
+        y = data->plr.y + (double)(10 * sin(angle) * -1);
     }
     if (!ft_check_next(data, x, y))
         (data->plr.x = x, data->plr.y = y);
@@ -82,10 +68,10 @@ void ft_move_plr(mlx_key_data_t key, void *arg)
         ft_for_back_ward(data, key.key);
     else if (key.key == 262)
         data->plr.d = real_angle(data->plr.d - \
-            (double)(3 * (M_PI / 180)));
+            (double)(6 * (M_PI / 180)));
     else if (key.key == 263)
         data->plr.d = real_angle(data->plr.d + \
-            (double)(3 * (M_PI / 180)));
+            (double)(6 * (M_PI / 180)));
     ft_clear_image(data->rays_img);
     ft_clear_image(data->ddd__img);
     ft_cast_rays(data);

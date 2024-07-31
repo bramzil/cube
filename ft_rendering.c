@@ -1,6 +1,6 @@
 # include "cube.h"
 
-static int  ft_render_line(t_data *data, t_face *tmp, double x)
+static int  ft_render_line(t_data *data, t_face *tmp, int32_t *texture, double x)
 {
     double      y;
     double      top;
@@ -9,9 +9,9 @@ static int  ft_render_line(t_data *data, t_face *tmp, double x)
 
     y = (data->wnd_ht / 2) - (tmp->height_1 / 2);
     top = y;
-    if (tmp->fix == 1)
+    if (tmp->fix == 'X')
         x_offset = (int)((int)data->array[(int)x].y % data->grd_ht);
-    else
+    else if (tmp->fix == 'Y')
         x_offset = (int)((int)data->array[(int)x].x % data->grd_wd);
     while (y < ((data->wnd_ht / 2) + (tmp->height_1 / 2)))
     {
@@ -19,7 +19,7 @@ static int  ft_render_line(t_data *data, t_face *tmp, double x)
             (data->grd_ht / tmp->height_1));
         if (0 < y && y < data->wnd_ht)
             mlx_put_pixel(data->ddd__img, \
-                x, y, data->texture.tb[(data->grd_wd * \
+                x, y,texture[(data->grd_wd * \
                     y_offset) + x_offset]);
         y++;
     }
@@ -41,7 +41,11 @@ void    ft_render_wall(t_data *data)
         step = (tmp->height_2 - tmp->height_1) / tmp->rays;
         while (++i < tmp->rays)
         {
-            ft_render_line(data, tmp, x);
+            if (tmp->typ == '1')
+                ft_render_line(data, tmp, data->w_text.tb, x);
+            else
+                ft_render_line(data, tmp, data->d_text.tb, x);
+
             tmp->height_1 += step;
             x++;
         }
