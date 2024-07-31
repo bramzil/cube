@@ -31,7 +31,6 @@ typedef struct  s_texture
 
 typedef struct  s_face
 {
-    char            typ;
     char            dir;
     char            fix;
     int             rays;

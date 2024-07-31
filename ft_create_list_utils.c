@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 08:29:18 by bramzil           #+#    #+#             */
-/*   Updated: 2024/07/30 12:51:23 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/07/31 02:10:02 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ t_face   *new_node(double x_ref, double y_ref)
         node->y_ref = y_ref;
         node->fix = 'U';
         node->dir = 'U';
-        node->typ = '1';
         node->rays = 0;
         node->next = NULL;
     }

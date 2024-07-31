@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 15:22:54 by bramzil           #+#    #+#             */
-/*   Updated: 2024/07/30 23:39:17 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/07/31 02:17:59 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,12 +34,8 @@ static int  update_x_face(t_data *data, t_face **tmp, int i)
     else if (data->array[i].x < data->plr.x)
         (*tmp)->dir = 'W';
     if ((i == (data->wnd_wd - 1)) || \
-        (data->array[i + 1].y != (*tmp)->y_ref) || \
-        (data->map[y][x] != (*tmp)->typ))
+        (data->array[i + 1].y != (*tmp)->y_ref))
         (*tmp)->height_2 = get_height(data, i);
-    if (data->map[y][x] != (*tmp)->typ)
-        if (new_face(data, tmp, i))
-            return (-1);
     return (0);
 }
 
@@ -55,12 +51,8 @@ static int  update_y_face(t_data *data, t_face **tmp, int i)
     else if (0 < (data->array[i].y - data->plr.y))
         (*tmp)->dir = 'S';
     if ((i == (data->wnd_wd - 1)) || \
-        (data->array[i + 1].y != (*tmp)->y_ref) || \
-        (data->map[y][x] != (*tmp)->typ))
+        (data->array[i + 1].y != (*tmp)->y_ref))
         (*tmp)->height_2 = get_height(data, i);
-    if (data->map[y][x] != (*tmp)->typ)
-        if (new_face(data, tmp, i))
-            return (-1);
     return (0);
 }
 
@@ -72,21 +64,13 @@ static void init_face(t_data *data, t_face *tmp, int i)
     x = data->array[i].x / data->grd_wd;
     y = data->array[i].y / data->grd_ht;
     if (data->array[i].x != tmp->x_ref)
-    {
         tmp->fix = 'Y';
-        ((data->array[i].y < data->plr.y) && y--);
-    }
     else if (data->array[i].y != tmp->y_ref)
-    {
         tmp->fix = 'X';
-        ((data->array[i].x < data->plr.x) && x--);
-    }
     if (tmp->height_1 == -1)
         tmp->height_1 = get_height(data, i);
-    if ((i == (data->wnd_wd - 1)) || \
-        (data->array[i + 1].x != tmp->x_ref))
+    if (i == (data->wnd_wd - 1))
         tmp->height_2 = get_height(data, i);
-    (data->map[y][x] == 'd') && (tmp->typ = 'd');
 }
 
 t_face  *ft_create_list(t_data *data)
