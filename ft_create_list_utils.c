@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 08:29:18 by bramzil           #+#    #+#             */
-/*   Updated: 2024/07/31 02:10:02 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/02 10:37:06 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,6 @@ double get_height(t_data *data, int i)
     oppo = fabs(data->plr.y - data->array[i].y);
     dst = sqrt((oppo * oppo) + (adja * adja)) * \
         cos(ray_angle);
-    result = ((300.0 * 200.0) / dst);
+    result = ((200.0 * 200.0) / dst);
     return (result);
 }

@@ -73,7 +73,7 @@ void    ft_cast_rays(t_data *data)
         ft_inter(data, &inter, angle);
         data->array[x].x = inter.x;
         data->array[x].y = inter.y;
-        if (x % 10 == 0)
+        if (x % 20 == 0)
             ft_draw_line(data, &inter);
         angle += incr;
     }

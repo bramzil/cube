@@ -36,7 +36,7 @@ o%				: %c cube.h
 	gcc -c $< -o $@ -g  -O3 -ffast-math  -fsanitize=address
 
 $(NAME)			: $(OBJS)
-	gcc $(OBJS)  -o $(NAME) $(LINK) $(LIBS)   -O3 -ffast-math -g -fsanitize=address
+	gcc $(OBJS)  -o $(NAME) $(LINK) $(LIBS)  -ffast-math -g -fsanitize=address
 clean			:
 	rm -rf *o
 

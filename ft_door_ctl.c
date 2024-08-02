@@ -62,7 +62,7 @@ void    fill_doors_array(t_data *data)
                 data->door_arr[k].j = j;
                 data->door_arr[k].var = 32;
                 data->door_arr[k].state = 'C';
-                data->door_arr[k].counter = 100;
+                data->door_arr[k].counter = 5;
                 k++;
             }
         }
