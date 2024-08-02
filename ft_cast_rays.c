@@ -44,7 +44,7 @@ static int ft_draw_line(t_data *data, t_point *inter)
     while (++i < end)
     {
         mlx_put_pixel(data->rays_img, start.x, \
-            start.y, 0xffff0022);
+            start.y, 0xffff00aa);
         start.x += incr.x;
         start.y += incr.y;
         if ((start.x < 0) || (119 < start.x) || \

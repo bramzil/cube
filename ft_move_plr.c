@@ -21,13 +21,13 @@ static void ft_for_back_ward(t_data *data, int keycode)
 
     if (keycode == 87)
     {
-        x = data->plr.x + (10 * cos(data->plr.d));
-        y = data->plr.y + (10 * sin(data->plr.d) * -1);
+        x = data->plr.x + (8 * cos(data->plr.d));
+        y = data->plr.y + (8 * sin(data->plr.d) * -1);
     }
     else if (keycode == 83)
     {
-        x = data->plr.x + (10 * cos(data->plr.d) * -1);
-        y = data->plr.y + (10 * sin(data->plr.d));
+        x = data->plr.x + (8 * cos(data->plr.d) * -1);
+        y = data->plr.y + (8 * sin(data->plr.d));
     }
     if (!ft_check_next(data, x, y))
         (data->plr.x = x, data->plr.y = y);
