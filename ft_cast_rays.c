@@ -43,7 +43,7 @@ static int ft_draw_line(t_data *data, t_point *inter)
     end = steps(data, inter, &incr);
     while (++i < end)
     {
-        mlx_put_pixel(data->rays_img, start.x, \
+        mlx_put_pixel(data->map_img, start.x, \
             start.y, 0xffff00aa);
         start.x += incr.x;
         start.y += incr.y;

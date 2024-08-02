@@ -12,12 +12,19 @@
 
 # include "cube.h"
 
-static void set_fix(t_face *tmp, t_point *arr, t_point *ref, int i)
+static t_face   *new_node()
 {
-    if (arr[i].y != ref->y)
-            tmp->fix = 'X';
-    else if (arr[i].x != ref->x)
-        tmp->fix = 'Y';
+    t_face      *node;
+    
+    node = malloc(sizeof(t_face));
+    if (node)
+    {
+        node->fix = 'U';
+        node->dir = 'U';
+        node->rays = 0;
+        node->next = NULL;
+    }
+    return (node);
 }
 
 static void set_dir(t_data *data, t_face *tmp, int i)
@@ -36,6 +43,37 @@ static void set_dir(t_data *data, t_face *tmp, int i)
         else if (data->plr.x < data->array[i].x)
             tmp->dir = 'W';
     }
+}
+
+static void set_fix(t_face *tmp, t_point *arr, t_point *ref, int i)
+{
+    if (arr[i].y != ref->y)
+            tmp->fix = 'X';
+    else if (arr[i].x != ref->x)
+        tmp->fix = 'Y';
+}
+
+
+static int  new_face(t_data *dt, t_face **tp, t_point *rf, int i)
+{
+    t_face      *new;
+
+    rf->x = dt->array[i].x;
+    rf->y = dt->array[i].y;
+    if (tp)
+    {
+        new = new_node();
+        if (!new)
+            return (-1);
+        if ((*tp) == NULL)
+            (*tp) = new;
+        else
+        {
+            (*tp)->next = new;
+            (*tp) = (*tp)->next;
+        }
+    }
+    return (-1 * (tp == NULL));
 }
 
 t_face  *face_list(t_data *data)

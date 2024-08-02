@@ -36,10 +36,10 @@ static int  put_pixel(t_data *data, int *ind, t_point *pos)
 
     map = data->map;
     if (map[ind[1]][ind[0]] == '1')
-        mlx_put_pixel(data->ddd__img, pos->x, pos->y, \
+        mlx_put_pixel(data->proj_img, pos->x, pos->y, \
             data->w_text.tb[ind[2]]);
     else
-        mlx_put_pixel(data->ddd__img, pos->x, pos->y, \
+        mlx_put_pixel(data->proj_img, pos->x, pos->y, \
             data->d_text.tb[ind[2]]);
     return (0);
 }

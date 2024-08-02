@@ -5,7 +5,7 @@
 # include <math.h>
 # include <stdlib.h>
 # include <stdio.h>
-# include "MLX42/MLX42.h"
+# include <MLX42.h>
 # include <stdarg.h>
 
 typedef struct  s_point
@@ -72,17 +72,15 @@ typedef struct  s_data
     t_texture       d_text;
     t_door          *door_arr;
     t_face          *face_lst;
-    mlx_image_t     *rays_img;
     mlx_image_t     *map_img;
-    mlx_image_t     *ddd__img;
+    mlx_image_t     *proj_img;
 }               t_data;
 
-int         new_face(t_data *dt, t_face **tp, t_point *rf, int i);
 void        ft_move_plr(mlx_key_data_t key, void *arg);
 int         ft_free_lst(t_face *lst);
-void        ft_door_ctl(void *par);
+int         ft_door_ctl(t_data *data);
+void        animation(void *arg);
 int         init_gun(t_data *data);
-t_face      *new_node();
 int         ft_mini_map(t_data *data);
 void        ft_cast_rays(t_data *data);
 void        ft_clear_image(mlx_image_t *img);

@@ -22,7 +22,7 @@ static void close_door(t_data *data, t_door *door)
         door->state = 'C';
 }
 
-double get_distance(t_data *data, int i)
+static double get_distance(t_data *data, int i)
 {
     double      adja;
     double      oppo;
@@ -37,38 +37,47 @@ double get_distance(t_data *data, int i)
     return (sqrt((adja * adja) + (oppo * oppo)));
 }
 
-void ft_door_ctl(void *par)
+t_door  *get_door(t_data *data, int i, int j)
+{
+    int         k;
+
+    k = -1;
+    if (data->map[j][i] == 'd')
+    {
+        while (++k < data->doors_nbr)
+        {
+            if (data->door_arr[k].i == i && \
+                data->door_arr[k].j == j)
+                return (&data->door_arr[k]);
+        }
+    }
+    return (NULL);
+}
+
+int ft_door_ctl(t_data *data)
 {
     int         i;
     int         bl;
     double      dist;
-    t_data      *data;
     t_door      *array;
-    static int  counter;
 
     i = -1;
     bl = 0;
-    data = (t_data *)par;
     array = data->door_arr;
-    if (counter <= 0)
+    while (++i < data->doors_nbr)
     {
-        shut(data);
-        while (++i < data->doors_nbr)
+        dist = get_distance(data, i);
+        if ((dist < 70) && (array[i].state != 'O') && ++bl)
+            open_door(data, &array[i]);
+        else if ((70 < dist) && (array[i].state != 'C') && ++bl)
+            close_door(data, &array[i]);
+        if (bl)
         {
-            dist = get_distance(data, i);
-            if ((dist < 70) && (array[i].state != 'O') && ++bl)
-                open_door(data, &array[i]);
-            else if ((70 < dist) && (array[i].state != 'C') && ++bl)
-                close_door(data, &array[i]);
-            if (bl)
-            {
-                ft_clear_image(data->ddd__img);
-                ft_cast_rays(data);
-            }
+            ft_clear_image(data->proj_img);
+            ft_clear_image(data->map_img);
+            ft_cast_rays(data);
         }
-        counter = 5;
     }
-    counter--;
 }
 
 void    fill_doors_array(t_data *data)
@@ -95,21 +104,4 @@ void    fill_doors_array(t_data *data)
             }
         }
     }
-}
-
-t_door  *get_door(t_data *data, int i, int j)
-{
-    int         k;
-
-    k = -1;
-    if (data->map[j][i] == 'd')
-    {
-        while (++k < data->doors_nbr)
-        {
-            if (data->door_arr[k].i == i && \
-                data->door_arr[k].j == j)
-                return (&data->door_arr[k]);
-        }
-    }
-    return (NULL);
 }

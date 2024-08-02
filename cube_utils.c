@@ -25,43 +25,6 @@ int ft_free_lst(t_face *lst)
     return (0);
 }
 
-t_face   *new_node()
-{
-    t_face      *node;
-    
-    node = malloc(sizeof(t_face));
-    if (node)
-    {
-        node->fix = 'U';
-        node->dir = 'U';
-        node->rays = 0;
-        node->next = NULL;
-    }
-    return (node);
-}
-
-int  new_face(t_data *dt, t_face **tp, t_point *rf, int i)
-{
-    t_face      *new;
-
-    rf->x = dt->array[i].x;
-    rf->y = dt->array[i].y;
-    if (tp)
-    {
-        new = new_node();
-        if (!new)
-            return (-1);
-        if ((*tp) == NULL)
-            (*tp) = new;
-        else
-        {
-            (*tp)->next = new;
-            (*tp) = (*tp)->next;
-        }
-    }
-    return (-1 * (tp == NULL));
-}
-
 double get_height(t_data *data, int i)
 {
     double      dst;
@@ -80,4 +43,16 @@ double get_height(t_data *data, int i)
         cos(ray_angle);
     result = ((200.0 * 200.0) / dst);
     return (result);
+}
+
+void    animation(void *arg)
+{
+    static int  counter;
+    if (counter == 0)
+    {
+        ft_door_ctl(arg);
+        counter = 5;
+        shut(arg);
+    }
+    counter--;
 }

@@ -76,8 +76,8 @@ void ft_move_plr(mlx_key_data_t hook, void *arg)
         else if (hook.key == 263)
             data->plr.d = real_angle(data->plr.d + \
                 (double)(6 * (M_PI / 180)));
-        ft_clear_image(data->rays_img);
-        ft_clear_image(data->ddd__img);
+        ft_clear_image(data->proj_img);
+        ft_clear_image(data->map_img);
         ft_cast_rays(data);
     }
 }
