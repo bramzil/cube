@@ -7,7 +7,7 @@ SRCS			= 	main.c \
 					ft_mini_map.c \
 					ft_rendering.c \
 					ft_intersection.c \
-					ft_create_list.c \
+					ft_face_list.c \
 					ft_check_next.c \
 					ft_door_ctl.c \
 					ft_create_list_utils.c
@@ -21,10 +21,11 @@ OBJS			= $(SRCS:%c=%o)
 
 NAME			= cube
 
-# LINK			= -framework Cocoa -framework OpenGL -framework IOKit
-LINK			= -lmlx42 -lglfw -lm
+LINK			= -framework Cocoa -framework OpenGL -framework IOKit
 
-# LIBS			= -lmlx42 -lglfw3
+# LINK			= -lmlx42 -lglfw -lm
+
+LIBS			= MLX42/libmlx42.a -lglfw3
 
 
 ############################# rules ###################################
@@ -32,10 +33,10 @@ LINK			= -lmlx42 -lglfw -lm
 all				: $(NAME)
 
 o%				: %c cube.h
-	gcc -c $< -o $@
+	gcc -c $< -o $@ -g  -O3 -ffast-math  -fsanitize=address
 
 $(NAME)			: $(OBJS)
-	gcc $(OBJS)  -o $(NAME) $(LINK) 
+	gcc $(OBJS)  -o $(NAME) $(LINK) $(LIBS)   -O3 -ffast-math -g -fsanitize=address
 clean			:
 	rm -rf *o
 

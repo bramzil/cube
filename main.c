@@ -113,8 +113,8 @@ int main()
 {
     t_data  data;
     char    *map = "1111111111 1000000001 1000010101 \
-                    1100000001 10101d1101 1010000001 \
-                    1000000011 1010110001 1000000001 \
+                    1100000001 10101d11d1 1010000001 \
+                    1000000011 1011d10001 1000000001 \
                     1111111111";
 
     data.fact = 4.0;
@@ -125,9 +125,8 @@ int main()
     data.grd_wd = 64;
     data.wnd_ht = 700;
     data.wnd_wd = 1100;
-    data.door.var = 32;
-    data.door.state = 'c';
-    data.door.counter = 100;
+    data.door = NULL;
+    data.doors_nbr = 3;
     data.face_lst = NULL;
     data.map = ft_split(map, ' ');
     data.w_text.wd = 64;
@@ -135,12 +134,16 @@ int main()
     data.w_text.tb = get_texture(data.grd_wd, data.grd_ht, 0xff0000ff);
     data.d_text.wd = 64;
     data.d_text.ht = 64;
-    data.d_text.tb = get_texture(data.grd_wd, data.grd_ht, 0xf0f0f0ff);
+    data.d_text.tb = get_texture(data.grd_wd, data.grd_ht, 0xf0f0f022);
     if (!data.map)
         return (printf("ft_split fails!!\n"));
-    data.array = (t_point *)malloc(sizeof(t_point) * data.wnd_wd);
+    data.array = malloc(sizeof(t_point) * data.wnd_wd);
     if (!data.array)
-        return (printf("arr allocation!!\n"));
+        return (printf("arr allocation fails!!\n"));
+    data.door_arr = malloc(sizeof(t_door) * data.doors_nbr);
+    if (!data.door_arr)
+        return (printf("doors arr allocation fails!!\n"));
+    fill_doors_array(&data);
     if (ft_create_window(&data))
         return (-1);
     mlx_key_hook(data.mlx, ft_move_plr, &data);

@@ -5,7 +5,7 @@
 # include <math.h>
 # include <stdlib.h>
 # include <stdio.h>
-# include <MLX42.h>
+# include "MLX42/MLX42.h"
 # include <stdarg.h>
 
 typedef struct  s_point
@@ -16,9 +16,11 @@ typedef struct  s_point
 
 typedef struct  s_door
 {
-    int         var;
-    char        state;
-    int         counter;
+    int             i;
+    int             j;
+    int             var;
+    char            state;
+    int             counter;
 }               t_door;
 
 typedef struct  s_plr
@@ -51,13 +53,15 @@ typedef struct  s_data
     int             wnd_wd;
     int             grd_ht;
     int             grd_wd;
+    int             doors_nbr;
     t_plr           plr;
-    t_door          door;
+    t_door          *door;
     double          fact;
     mlx_t           *mlx;
     t_point         *array;
     t_texture       w_text;
     t_texture       d_text;
+    t_door          *door_arr;
     t_face          *face_lst;
     mlx_image_t     *rays_img;
     mlx_image_t     *map_img;
@@ -74,8 +78,10 @@ void        ft_cast_rays(t_data *data);
 void        ft_clear_image(mlx_image_t *img);
 char        **ft_split(char const *s, char c);
 double      get_height(t_data *data, int i);
-t_face      *ft_create_list(t_data *data);
+t_face      *face_list(t_data *data);
 void        ft_render_wall(t_data *data);
+void        fill_doors_array(t_data *data);
+t_door      *get_door(t_data *data, int i, int j, int bl);
 double      real_angle(double angle);
 int         ft_check_next(t_data *data, double x, double y);
 void        ft_inter(t_data *data, t_point *inter, double angle);

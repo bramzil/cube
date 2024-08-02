@@ -11,6 +11,7 @@ static int  is_wall(t_data *dt, t_point *p, int x_d, int y_d)
 {
     int         i;
     int         j;
+    t_door      *door;
 
     i = (p->x / dt->grd_wd) - (1 * (x_d < 0));
     j = (p->y / dt->grd_ht) - (1 * (y_d < 0));
@@ -21,11 +22,12 @@ static int  is_wall(t_data *dt, t_point *p, int x_d, int y_d)
         return (1);
     else if (dt->map[j][i] == 'd')
     {
-        if ((x_d) && (((p->y < (j * dt->grd_ht + dt->door.var)) || \
-            (((j * dt->grd_ht + 64) - dt->door.var) < p->y))))
+        door = get_door(dt, i, j, 0);
+        if ((x_d) && (((p->y < (j * dt->grd_ht + door->var)) || \
+            (((j * dt->grd_ht + 64) - door->var) < p->y))))
             return (1);
-        else if ((y_d) && ((p->x < (i * dt->grd_wd + dt->door.var)) || \
-            (((i * dt->grd_wd + 64) - dt->door.var) < p->x)))
+        else if ((y_d) && ((p->x < (i * dt->grd_wd + door->var)) || \
+            (((i * dt->grd_wd + 64) - door->var) < p->x)))
             return (1);
     }
     return (0);

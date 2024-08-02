@@ -21,13 +21,13 @@ static void ft_for_back_ward(t_data *data, int keycode)
 
     if (keycode == 87)
     {
-        x = data->plr.x + (8 * cos(data->plr.d));
-        y = data->plr.y + (8 * sin(data->plr.d) * -1);
+        x = data->plr.x + (10 * cos(data->plr.d));
+        y = data->plr.y + (10 * sin(data->plr.d) * -1);
     }
     else if (keycode == 83)
     {
-        x = data->plr.x + (8 * cos(data->plr.d) * -1);
-        y = data->plr.y + (8 * sin(data->plr.d));
+        x = data->plr.x + (10 * cos(data->plr.d) * -1);
+        y = data->plr.y + (10 * sin(data->plr.d));
     }
     if (!ft_check_next(data, x, y))
         (data->plr.x = x, data->plr.y = y);
@@ -73,9 +73,15 @@ void ft_move_plr(mlx_key_data_t hook, void *arg)
         data->plr.d = real_angle(data->plr.d + \
             (double)(6 * (M_PI / 180)));
     else if (hook.key == 79)
-        data->door.state = 'N';
+    {
+        data->door = get_door(data, 0, 0, 1);
+        ((data->door != NULL) && (data->door->state = 'N'));
+    }
     else if (hook.key == 67)
-        data->door.state = 'S';
+    {
+        data->door = get_door(data, 0, 0, 1);
+        ((data->door != NULL) && (data->door->state = 'S'));
+    }
     ft_clear_image(data->rays_img);
     ft_clear_image(data->ddd__img);
     ft_cast_rays(data);

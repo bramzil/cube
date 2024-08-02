@@ -77,6 +77,6 @@ void    ft_cast_rays(t_data *data)
             ft_draw_line(data, &inter);
         angle += incr;
     }
-    data->face_lst = ft_create_list(data);
+    data->face_lst = face_list(data);
     ft_render_wall(data);
 }
