@@ -32,16 +32,16 @@ static double hor_inter(t_data *data, t_point *inter, double angle)
 
     get_dir(angle, &dir);
     grd_ht = data->grd_ht;
-    inter->y = (int)(data->plr.y / grd_ht) * grd_ht;
+    inter->y = (int)(data->plr->y / grd_ht) * grd_ht;
     while ((0 < inter->y) && (inter->y < \
         (data->grd_ht * 10)))
     {
-        if (((0 < dir.y) && (data->plr.y < inter->y)) || \
-            ((dir.y < 0) && (inter->y < data->plr.y)))
+        if (((0 < dir.y) && (data->plr->y < inter->y)) || \
+            ((dir.y < 0) && (inter->y < data->plr->y)))
         {
-            agle.y = fabs(data->plr.y - inter->y);
+            agle.y = fabs(data->plr->y - inter->y);
             agle.x = fabs(agle.y / tan(angle));
-            inter->x = data->plr.x + (dir.x  * agle.x);
+            inter->x = data->plr->x + (dir.x  * agle.x);
             if (is_wall(data, inter, 0, dir.y))
                 break ;
         }
@@ -58,15 +58,15 @@ static double ver_inter(t_data *data, t_point *inter, double angle)
 
     get_dir(angle, &dir);
     grd_wd = data->grd_wd;
-    inter->x = (int)(data->plr.x / grd_wd) * grd_wd;
+    inter->x = (int)(data->plr->x / grd_wd) * grd_wd;
     while ((0 < inter->x) && (inter->x < (grd_wd * 10)))
     {
-        if (((0 < dir.x) && (data->plr.x < inter->x)) || \
-            ((dir.x < 0) && (inter->x < data->plr.x)))
+        if (((0 < dir.x) && (data->plr->x < inter->x)) || \
+            ((dir.x < 0) && (inter->x < data->plr->x)))
         {
-            agle.x = fabs(data->plr.x - inter->x);
+            agle.x = fabs(data->plr->x - inter->x);
             agle.y = fabs(agle.x * tan(angle));
-            inter->y = data->plr.y + (dir.y * agle.y);
+            inter->y = data->plr->y + (dir.y * agle.y);
             if (is_wall(data, inter, dir.x, 0))
                 break ;
         }
@@ -131,16 +131,16 @@ static double hor_inter(t_data *data, t_point *inter, double angle)
 
     grd_ht = data->grd_ht;
     get_dir(angle, &x_dir, &y_dir);
-    inter->y = (int)(data->plr.y / grd_ht) * grd_ht;
+    inter->y = (int)(data->plr->y / grd_ht) * grd_ht;
     while ((0 < inter->y) && (inter->y < \
         (data->grd_ht * 10)))
     {
-        if (((0 < y_dir) && (data->plr.y < inter->y)) || \
-            ((y_dir < 0) && (inter->y < data->plr.y)))
+        if (((0 < y_dir) && (data->plr->y < inter->y)) || \
+            ((y_dir < 0) && (inter->y < data->plr->y)))
         {
-            oppo = fabs(data->plr.y - inter->y);
+            oppo = fabs(data->plr->y - inter->y);
             adja = fabs(oppo / tan(angle));
-            inter->x = data->plr.x + (x_dir  * adja);
+            inter->x = data->plr->x + (x_dir  * adja);
             if (is_wall(data, inter, 0, y_dir))
                 break ;
         }
@@ -159,16 +159,16 @@ static double ver_inter(t_data *data, t_point *inter, double angle)
 
     grd_wd = data->grd_wd;
     get_dir(angle, &x_dir, &y_dir);
-    inter->x = (int)(data->plr.x / grd_wd) * grd_wd;
+    inter->x = (int)(data->plr->x / grd_wd) * grd_wd;
     while ((0 < inter->x) && (inter->x < \
         (data->grd_wd * 10)))
     {
-        if (((0 < x_dir) && (data->plr.x < inter->x)) || \
-            ((x_dir < 0) && (inter->x < data->plr.x)))
+        if (((0 < x_dir) && (data->plr->x < inter->x)) || \
+            ((x_dir < 0) && (inter->x < data->plr->x)))
         {
-            adja = fabs(data->plr.x - inter->x);
+            adja = fabs(data->plr->x - inter->x);
             oppo = fabs(adja * tan(angle));
-            inter->y = data->plr.y + (y_dir * oppo);
+            inter->y = data->plr->y + (y_dir * oppo);
             if (is_wall(data, inter, x_dir, 0))
                 break ;
         }

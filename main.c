@@ -101,6 +101,12 @@ int ft_create_window(t_data  *data)
         return (printf("data->ddd__img fails!!\n"));
     if (mlx_image_to_window(data->mlx, data->ddd__img, 0, 0))
         return (printf("data->ddd__img fails!!\n"));
+    if (init_gun(data))
+        return (printf("init gun array fails!!"));
+    if (mlx_image_to_window(data->mlx, data->gun.img, \
+        ((data->wnd_wd / 2) - (data->gun.img->width / 2)), \
+        (data->wnd_ht - data->gun.img->height)))
+        return (printf("gun_arr 0 fails!!\n"));
     if (mlx_image_to_window(data->mlx, data->map_img, 10, 10))
         return (printf("data->wall__img fails!!\n"));
     if (mlx_image_to_window(data->mlx, data->rays_img, 10, 10))
@@ -113,7 +119,7 @@ int main()
 {
     t_data  data;
     char    *map = "1111111111 1000000001 1000010101 \
-                    1100000001 10101dd1d1 1010000001 \
+                    1100000001 10101d11d1 1010000001 \
                     1000000011 1011d10001 1000000001 \
                     1111111111";
 
@@ -125,7 +131,6 @@ int main()
     data.grd_wd = 64;
     data.wnd_ht = 700;
     data.wnd_wd = 1100;
-    data.door = NULL;
     data.doors_nbr = 3;
     data.face_lst = NULL;
     data.map = ft_split(map, ' ');

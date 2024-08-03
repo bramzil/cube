@@ -46,6 +46,15 @@ typedef struct  s_face
     struct s_face   *next;
 }                t_face;
 
+typedef struct  s_gun
+{
+    int             i;
+    char            sht;
+    int             nbr_sht;
+    mlx_image_t     *img;
+    char            **arr;
+}               t_gun;
+
 typedef struct  s_data
 {
     char            **map;
@@ -55,7 +64,7 @@ typedef struct  s_data
     int             grd_wd;
     int             doors_nbr;
     t_plr           plr;
-    t_door          *door;
+    t_gun           gun;
     double          fact;
     mlx_t           *mlx;
     t_point         *array;
@@ -72,16 +81,18 @@ int         new_face(t_data *dt, t_face **tp, t_point *rf, int i);
 void        ft_move_plr(mlx_key_data_t key, void *arg);
 int         ft_free_lst(t_face *lst);
 void        ft_door_ctl(void *par);
+int         init_gun(t_data *data);
 t_face      *new_node();
 int         ft_mini_map(t_data *data);
 void        ft_cast_rays(t_data *data);
 void        ft_clear_image(mlx_image_t *img);
 char        **ft_split(char const *s, char c);
 double      get_height(t_data *data, int i);
+void        shut(t_data *data);
 t_face      *face_list(t_data *data);
 void        ft_render_wall(t_data *data);
 void        fill_doors_array(t_data *data);
-t_door      *get_door(t_data *data, int i, int j, int bl);
+t_door      *get_door(t_data *data, int i, int j);
 double      real_angle(double angle);
 int         ft_check_next(t_data *data, double x, double y);
 void        ft_inter(t_data *data, t_point *inter, double angle);

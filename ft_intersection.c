@@ -22,7 +22,7 @@ static int  is_wall(t_data *dt, t_point *p, int x_d, int y_d)
         return (1);
     else if (dt->map[j][i] == 'd')
     {
-        door = get_door(dt, i, j, 0);
+        door = get_door(dt, i, j);
         if (door && (x_d) && (((p->y < (j * dt->grd_ht + \
             door->var)) || (((j * dt->grd_ht + 64) - \
                 door->var) < p->y))))

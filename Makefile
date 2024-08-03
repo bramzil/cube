@@ -10,6 +10,7 @@ SRCS			= 	main.c \
 					ft_face_list.c \
 					ft_check_next.c \
 					ft_door_ctl.c \
+					ft_gun_sprite.c \
 					ft_create_list_utils.c
 
 

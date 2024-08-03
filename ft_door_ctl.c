@@ -5,8 +5,7 @@ static void open_door(t_data *data, t_door *door)
     if (2 < door->var)
     {
         door->var -= 1;
-        ft_clear_image(data->ddd__img);
-        ft_cast_rays(data);
+        door->state = 'M';
     }
     else
         door->state = 'O';
@@ -16,31 +15,60 @@ static void close_door(t_data *data, t_door *door)
 {
     if (door->var < 32)
     {
+        door->state = 'M';
         door->var += 1;
-        ft_clear_image(data->ddd__img);
-        ft_cast_rays(data);
     }
     else
         door->state = 'C';
 }
 
+double get_distance(t_data *data, int i)
+{
+    double      adja;
+    double      oppo;
+    t_point     center;
+
+    center.x = (data->door_arr[i].i  * \
+        data->grd_wd) + 32;
+    center.y = (data->door_arr[i].j * \
+        data->grd_ht) + 32;
+    adja = fabs(data->plr.x - center.x);
+    oppo = fabs(data->plr.y - center.y);
+    return (sqrt((adja * adja) + (oppo * oppo)));
+}
+
 void ft_door_ctl(void *par)
 {
+    int         i;
+    int         bl;
+    double      dist;
     t_data      *data;
+    t_door      *array;
+    static int  counter;
 
+    i = -1;
+    bl = 0;
     data = (t_data *)par;
-    if (data->door)
+    array = data->door_arr;
+    if (counter <= 0)
     {
-        if (data->door->counter <= 0)
+        shut(data);
+        while (++i < data->doors_nbr)
         {
-            if (data->door->state == 'N')
-                open_door(data, data->door);
-            else if (data->door->state == 'S')
-                close_door(data, data->door);
-            data->door->counter = 5;
+            dist = get_distance(data, i);
+            if ((dist < 70) && (array[i].state != 'O') && ++bl)
+                open_door(data, &array[i]);
+            else if ((70 < dist) && (array[i].state != 'C') && ++bl)
+                close_door(data, &array[i]);
+            if (bl)
+            {
+                ft_clear_image(data->ddd__img);
+                ft_cast_rays(data);
+            }
         }
-        data->door->counter--;
+        counter = 5;
     }
+    counter--;
 }
 
 void    fill_doors_array(t_data *data)
@@ -69,18 +97,11 @@ void    fill_doors_array(t_data *data)
     }
 }
 
-t_door  *get_door(t_data *data, int i, int j, int bl)
+t_door  *get_door(t_data *data, int i, int j)
 {
     int         k;
 
     k = -1;
-    if (bl)
-    {
-        i = ((data->plr.x + (80 * \
-            cos(data->plr.d))) / data->grd_wd);
-        j = ((data->plr.y + (80 * \
-            sin(data->plr.d) * -1)) / data->grd_ht);
-    }
     if (data->map[j][i] == 'd')
     {
         while (++k < data->doors_nbr)

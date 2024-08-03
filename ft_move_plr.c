@@ -62,27 +62,23 @@ void ft_move_plr(mlx_key_data_t hook, void *arg)
     t_data      *data;
 
     data = (t_data *)arg;
-    if (hook.key == 65 || hook.key == 68)
-        ft_go_left_right(data, hook.key);
-    else if ((hook.key == 83) || (hook.key == 87))
-        ft_for_back_ward(data, hook.key);
-    else if (hook.key == 262)
-        data->plr.d = real_angle(data->plr.d - \
-            (double)(6 * (M_PI / 180)));
-    else if (hook.key == 263)
-        data->plr.d = real_angle(data->plr.d + \
-            (double)(6 * (M_PI / 180)));
-    else if (hook.key == 79)
+    if (hook.key == 32)
+        data->gun.sht = 'S';
+    else
     {
-        data->door = get_door(data, 0, 0, 1);
-        ((data->door != NULL) && (data->door->state = 'N'));
+        if (hook.key == 65 || hook.key == 68)
+            ft_go_left_right(data, hook.key);
+        else if ((hook.key == 83) || (hook.key == 87))
+            ft_for_back_ward(data, hook.key);
+        else if (hook.key == 262)
+            data->plr.d = real_angle(data->plr.d - \
+                (double)(6 * (M_PI / 180)));
+        else if (hook.key == 263)
+            data->plr.d = real_angle(data->plr.d + \
+                (double)(6 * (M_PI / 180)));
+        ft_clear_image(data->rays_img);
+        ft_clear_image(data->ddd__img);
+        ft_cast_rays(data);
     }
-    else if (hook.key == 67)
-    {
-        data->door = get_door(data, 0, 0, 1);
-        ((data->door != NULL) && (data->door->state = 'S'));
-    }
-    ft_clear_image(data->rays_img);
-    ft_clear_image(data->ddd__img);
-    ft_cast_rays(data);
 }
+

@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 00:57:57 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/02 11:40:43 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/03 11:42:27 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int  ft_check_next(t_data *data, double x, double y)
             return (1);
         else if (data->map[y1][x1] == 'd')
         {
-            door = get_door(data, x1, y1, 0);
+            door = get_door(data, x1, y1);
             if (door && door->state == 'C')
                 return (1);
         }
