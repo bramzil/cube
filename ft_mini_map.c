@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:07:11 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/04 17:02:12 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/04 18:25:35 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,13 +41,11 @@ static int draw_line(mlx_image_t *img, t_point *p1, t_point *p2)
     end = steps(p1, p2, &incr);
     while (++i < end)
     {
-        mlx_put_pixel(img, start.x, \
-            start.y, 0x00ff00ff);
+        if ((0 < start.x) && (start.x < img->width) && \
+            (0 < start.y) || (start.y < img->height))
+            mlx_put_pixel(img, start.x, start.y, 0x00ff00ff);
         start.x += incr.x;
         start.y += incr.y;
-        if ((start.x < 0) || (119 < start.x) || \
-            (start.y < 0) || (119 < start.y))
-            break ;
     }
     return (0);
 }
@@ -60,7 +58,7 @@ static int  draw_triangle(t_data *data)
     double      angle;
 
     i = -1;
-    while (++i < 5)
+    while (data->map_img && (++i < 5))
     {
         j = -1;
         angle = real_angle(data->plr.d - (M_PI / 2));
@@ -77,23 +75,25 @@ static int  draw_triangle(t_data *data)
     return (0);
 }
 
-static int  render_pixel(t_data *data, int *ref, int *ind, int *grd)
+static int  render_pixel(t_data *dt, int *ref, int *ind, int *grd)
 {
+    char        tmp;
+    
+    
     ind[0]++;
     if ((0 < ind[1]) && (ind[1] < (grd[1] * 10)) && \
         (0 < ind[0]) && (ind[0] < (grd[0] * 10)))
     {
-        
-        if (data->map[(int)(ind[1] / grd[1])][(int)\
-            (ind[0] / grd[0])] == '1')
-            mlx_put_pixel(data->map_img, (ind[0] - ref[0]), \
+        tmp = dt->map[(int)(ind[1] / grd[1])][(int)\
+            (ind[0] / grd[0])];
+        if (tmp == '1')
+            mlx_put_pixel(dt->map_img, (ind[0] - ref[0]), \
                 (ind[1] - ref[1]), 0xf0f0f0aa);
-        else if (data->map[(int)(ind[1] / grd[1])][(int)\
-            (ind[0] / grd[0])] == 'd')
-            mlx_put_pixel(data->map_img, (ind[0] - ref[0]), \
+        else if (tmp == 'd')
+            mlx_put_pixel(dt->map_img, (ind[0] - ref[0]), \
                 (ind[1] - ref[1]), 0x00f0f05f);
     }
-    if ((int)((data->plr.x / data->fact) + 60) <= ind[0])
+    if ((int)((dt->plr.x / dt->fact) + 60) <= ind[0])
         (ind[0] = ref[0] - 1, ind[1]++);
     return (0);
 }
@@ -111,7 +111,10 @@ int ft_mini_map(t_data *data)
     ind[1] = ref[1];
     ind[0] = ref[0] - 1;
     while (ind[1] < (int)((data->plr.y / data->fact) + 60))
-        render_pixel(data, ref, ind, grd);
+    {
+        if (data->map && data->map_img)
+            render_pixel(data, ref, ind, grd);
+    }
     draw_triangle(data);
     return (0);
 }

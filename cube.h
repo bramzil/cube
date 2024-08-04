@@ -52,8 +52,7 @@ typedef struct  s_gun
     int             i;
     char            sht;
     int             nbr_sht;
-    mlx_image_t     *img;
-    char            **arr;
+    mlx_image_t     *arr[13];
 }               t_gun;
 
 typedef struct  s_data
@@ -81,8 +80,9 @@ void        ft_move_plr(mlx_key_data_t key, void *arg);
 int         ft_free_lst(t_face *lst);
 int         ft_door_ctl(t_data *data);
 void        animation(void *arg);
-int         init_gun(t_data *data);
+int         init_gun_arr(t_data *data);
 int         ft_mini_map(t_data *data);
+int         delete_imgs(t_data *data, int size);
 void        ft_cast_rays(t_data *data);
 void        ft_clear_image(mlx_image_t *img);
 char        **ft_split(char const *s, char c);

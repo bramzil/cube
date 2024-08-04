@@ -30,8 +30,6 @@ int ft_create_window(t_data  *data)
     if (!(data->mlx = mlx_init(data->wnd_wd, data->wnd_ht, \
         "cube", 0)))
         return (printf("data->mlx fails!!\n"));
-    if (init_gun(data))
-        return (printf("init gun array fails!!"));
     if (!(data->map_img = mlx_new_image(data->mlx, 120, 120)))
         return (printf("data->map_img fails!!\n"));
     if (!(data->proj_img = mlx_new_image(data->mlx, \
@@ -41,10 +39,8 @@ int ft_create_window(t_data  *data)
         return (printf("data->proj_img fails!!\n"));
     if (mlx_image_to_window(data->mlx, data->map_img, 10, 10))
         return (printf("data->wall__img fails!!\n"));
-    if (mlx_image_to_window(data->mlx, data->gun.img, \
-        ((data->wnd_wd / 2) - (data->gun.img->width / 2)), \
-        (data->wnd_ht - data->gun.img->height)))
-        return (printf("gun_arr 0 fails!!\n"));
+    if (init_gun_arr(data))
+        return (printf("init gun array fails!!"));
     return (0);
 }
 
@@ -68,6 +64,9 @@ int main()
     data.face_lst = NULL;
     data.w_text.wd = 64;
     data.w_text.ht = 64;
+    data.gun.i = 0;
+    data.gun.sht = 'N';
+    data.gun.nbr_sht = 10;
     data.plr.h = data.wnd_ht / 2;
     data.w_text.tb = get_texture(data.grd_wd, data.grd_ht, 0xff0000ff);
     data.d_text.wd = 64;
