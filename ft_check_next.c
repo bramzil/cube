@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 00:57:57 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/03 11:42:27 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/04 16:39:20 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@ int  ft_check_next(t_data *data, double x, double y)
     int     x1;
     int     y1;
     char    **map;
-    t_door  *door;
 
     map = data->map;
     x1 = ((x + 3 - (6 * (x < data->plr.x))) / \
@@ -43,12 +42,6 @@ int  ft_check_next(t_data *data, double x, double y)
     {
         if (map[y1][x1] == '1')
             return (1);
-        else if (data->map[y1][x1] == 'd')
-        {
-            door = get_door(data, x1, y1);
-            if (door && door->state == 'C')
-                return (1);
-        }
     }
     return (0);
 }

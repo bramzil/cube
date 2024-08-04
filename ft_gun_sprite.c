@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 10:22:31 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/03 12:21:50 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/04 15:30:28 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,25 +26,26 @@ mlx_image_t *load_gun_sprite(mlx_t *mlx, char *path)
 
 int init_gun(t_data *data)
 {
+    char    *str = {
+                    "gun/gun0.png " \
+                    "gun/gun1.png " \
+                    "gun/gun2.png " \
+                    "gun/gun3.png " \
+                    "gun/gun4.png " \
+                    "gun/gun5.png " \
+                    "gun/gun6.png " \
+                    "gun/gun7.png " \
+                    "gun/gun8.png " \
+                    "gun/gun9.png " \
+                    "gun/gun10.png " \
+                    "gun/gun11.png " \
+                    "gun/gun12.png"};
     data->gun.i = 0;
     data->gun.sht = 'N';
     data->gun.nbr_sht = 10;
-    data->gun.arr = (char **)malloc(sizeof(char *) * 13);
+    data->gun.arr = ft_split(str, ' ');
     if (!data->gun.arr)
         return (-1);
-    data->gun.arr[0] = "gun/gun0.png";
-    data->gun.arr[1] = "gun/gun1.png";
-    data->gun.arr[2] = "gun/gun2.png";
-    data->gun.arr[3] = "gun/gun3.png";
-    data->gun.arr[4] = "gun/gun4.png";
-    data->gun.arr[5] = "gun/gun5.png";
-    data->gun.arr[6] = "gun/gun6.png";
-    data->gun.arr[7] = "gun/gun7.png";
-    data->gun.arr[8] = "gun/gun8.png";
-    data->gun.arr[9] = "gun/gun9.png";
-    data->gun.arr[10] = "gun/gun10.png";
-    data->gun.arr[11] = "gun/gun11.png";
-    data->gun.arr[12] = "gun/gun12.png";
     data->gun.img = load_gun_sprite(data->mlx, \
         data->gun.arr[0]);
     return (0);
@@ -53,8 +54,9 @@ int init_gun(t_data *data)
 void    reload(t_data *data)
 {
     static int      i;
+    static int      counter;
 
-    if (data->gun.nbr_sht == 0)
+    if (!data->gun.nbr_sht && !counter)
     {
         i++;
         mlx_delete_image(data->mlx, data->gun.img);
@@ -68,7 +70,9 @@ void    reload(t_data *data)
             i = 0;
             data->gun.nbr_sht = 10;
         }
+        counter = 2;
     }
+    counter--;
 }
 
 void    shut(t_data *data)

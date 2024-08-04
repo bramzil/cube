@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 15:22:54 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/03 11:42:03 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/04 16:24:30 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,16 +31,16 @@ static void set_dir(t_data *data, t_face *tmp, int i)
 {
     if (tmp->fix == 'Y')
     {
-        if (data->array[i].y < data->plr.y)
+        if (data->inter_arr[i].y < data->plr.y)
             tmp->dir = 'N';
-        else if (data->plr.y < data->array[i].y)
+        else if (data->plr.y < data->inter_arr[i].y)
             tmp->dir = 'S';
     }
     else
     {
-        if (data->array[i].x < data->plr.x)
+        if (data->inter_arr[i].x < data->plr.x)
             tmp->dir = 'E';
-        else if (data->plr.x < data->array[i].x)
+        else if (data->plr.x < data->inter_arr[i].x)
             tmp->dir = 'W';
     }
 }
@@ -58,8 +58,8 @@ static int  new_face(t_data *dt, t_face **tp, t_point *rf, int i)
 {
     t_face      *new;
 
-    rf->x = dt->array[i].x;
-    rf->y = dt->array[i].y;
+    rf->x = dt->inter_arr[i].x;
+    rf->y = dt->inter_arr[i].y;
     if (tp)
     {
         new = new_node();
@@ -86,7 +86,7 @@ t_face  *face_list(t_data *data)
     i = -1;
     tmp[0] = NULL;
     new_face(data, &tmp[0], &ref, 0);
-    (tmp[1] = tmp[0], arr = data->array);
+    (tmp[1] = tmp[0], arr = data->inter_arr);
     while (tmp[0] && (++i < data->wnd_wd))
     {
         if (tmp[0]->fix == 'U')

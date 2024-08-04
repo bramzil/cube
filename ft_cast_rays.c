@@ -12,48 +12,6 @@ double  real_angle(double angle)
     return (angle);
 }
 
-static int  steps(t_data *data, t_point *inter, t_point *incr)
-{
-    double       d_x;
-    double       d_y;
-    double       steps;
-
-    d_x = (inter->x - data->plr.x) / data->fact;
-    d_y = (inter->y - data->plr.y) / data->fact;
-    steps = fabs(d_x);
-    if (fabs(d_x) < fabs(d_y))
-        steps = fabs(d_y);
-    incr->x = d_x / steps;
-    incr->y = d_y / steps;
-    return (steps);
-}
-
-static int ft_draw_line(t_data *data, t_point *inter)
-{
-    int         i;
-    int         end;
-    double      adja;
-    double      oppo;
-    t_point     incr;
-    t_point     start;
-
-    i = -1;
-    start.x = 60;
-    start.y = 60;
-    end = steps(data, inter, &incr);
-    while (++i < end)
-    {
-        mlx_put_pixel(data->map_img, start.x, \
-            start.y, 0xffff00aa);
-        start.x += incr.x;
-        start.y += incr.y;
-        if ((start.x < 0) || (119 < start.x) || \
-            (start.y < 0) || (119 < start.y))
-            break ;
-    }
-    return (0);
-}
-
 void    ft_cast_rays(t_data *data)
 {
     int      x;
@@ -71,10 +29,8 @@ void    ft_cast_rays(t_data *data)
     {
         angle = real_angle(angle);
         ft_inter(data, &inter, angle);
-        data->array[x].x = inter.x;
-        data->array[x].y = inter.y;
-        if (x % 20 == 0)
-            ft_draw_line(data, &inter);
+        data->inter_arr[x].x = inter.x;
+        data->inter_arr[x].y = inter.y;
         angle += incr;
     }
     data->face_lst = face_list(data);

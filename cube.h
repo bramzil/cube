@@ -5,7 +5,7 @@
 # include <math.h>
 # include <stdlib.h>
 # include <stdio.h>
-# include <MLX42.h>
+# include "MLX42/MLX42.h"
 # include <stdarg.h>
 
 typedef struct  s_point
@@ -20,12 +20,12 @@ typedef struct  s_door
     int             j;
     int             var;
     char            state;
-    int             counter;
 }               t_door;
 
 typedef struct  s_plr
 {
     double          d;
+    double          h;
     double          x;
     double          y;
 }               t_plr;
@@ -35,6 +35,7 @@ typedef struct  s_texture
     int             wd;
     int             ht;
     int32_t         *tb;
+    mlx_texture_t   *texture;
 }               t_texture;
 
 typedef struct  s_face
@@ -67,9 +68,9 @@ typedef struct  s_data
     t_gun           gun;
     double          fact;
     mlx_t           *mlx;
-    t_point         *array;
     t_texture       w_text;
     t_texture       d_text;
+    t_point         *inter_arr;
     t_door          *door_arr;
     t_face          *face_lst;
     mlx_image_t     *map_img;

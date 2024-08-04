@@ -67,9 +67,9 @@ int ft_door_ctl(t_data *data)
     while (++i < data->doors_nbr)
     {
         dist = get_distance(data, i);
-        if ((dist < 70) && (array[i].state != 'O') && ++bl)
+        if ((dist < 90) && (array[i].state != 'O') && ++bl)
             open_door(data, &array[i]);
-        else if ((70 < dist) && (array[i].state != 'C') && ++bl)
+        else if ((90 < dist) && (array[i].state != 'C') && ++bl)
             close_door(data, &array[i]);
         if (bl)
         {
@@ -78,30 +78,5 @@ int ft_door_ctl(t_data *data)
             ft_cast_rays(data);
         }
     }
-}
-
-void    fill_doors_array(t_data *data)
-{
-    int         i;
-    int         j;
-    int         k;
-
-    k = 0;
-    j = -1;
-    while (data->map[++j])
-    {
-        i = -1;
-        while (data->map[j][++i] && (k < data->doors_nbr))
-        {
-            if (data->map[j][i] == 'd')
-            {
-                data->door_arr[k].i = i;
-                data->door_arr[k].j = j;
-                data->door_arr[k].var = 32;
-                data->door_arr[k].state = 'C';
-                data->door_arr[k].counter = 5;
-                k++;
-            }
-        }
-    }
+    return (0);
 }

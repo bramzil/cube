@@ -30,6 +30,8 @@ int ft_create_window(t_data  *data)
     if (!(data->mlx = mlx_init(data->wnd_wd, data->wnd_ht, \
         "cube", 0)))
         return (printf("data->mlx fails!!\n"));
+    if (init_gun(data))
+        return (printf("init gun array fails!!"));
     if (!(data->map_img = mlx_new_image(data->mlx, 120, 120)))
         return (printf("data->map_img fails!!\n"));
     if (!(data->proj_img = mlx_new_image(data->mlx, \
@@ -37,14 +39,12 @@ int ft_create_window(t_data  *data)
         return (printf("data->proj_img fails!!\n"));
     if (mlx_image_to_window(data->mlx, data->proj_img, 0, 0))
         return (printf("data->proj_img fails!!\n"));
-    if (init_gun(data))
-        return (printf("init gun array fails!!"));
+    if (mlx_image_to_window(data->mlx, data->map_img, 10, 10))
+        return (printf("data->wall__img fails!!\n"));
     if (mlx_image_to_window(data->mlx, data->gun.img, \
         ((data->wnd_wd / 2) - (data->gun.img->width / 2)), \
         (data->wnd_ht - data->gun.img->height)))
         return (printf("gun_arr 0 fails!!\n"));
-    if (mlx_image_to_window(data->mlx, data->map_img, 10, 10))
-        return (printf("data->wall__img fails!!\n"));
     return (0);
 }
 
@@ -66,24 +66,25 @@ int main()
     data.wnd_wd = 1100;
     data.doors_nbr = 3;
     data.face_lst = NULL;
-    data.map = ft_split(map, ' ');
     data.w_text.wd = 64;
     data.w_text.ht = 64;
+    data.plr.h = data.wnd_ht / 2;
     data.w_text.tb = get_texture(data.grd_wd, data.grd_ht, 0xff0000ff);
     data.d_text.wd = 64;
     data.d_text.ht = 64;
     data.d_text.tb = get_texture(data.grd_wd, data.grd_ht, 0xf0f0f022);
+    data.map = ft_split(map, ' ');
     if (!data.map)
         return (printf("ft_split fails!!\n"));
-    data.array = malloc(sizeof(t_point) * data.wnd_wd);
-    if (!data.array)
+    if (ft_create_window(&data))
+        return (-1);
+    data.inter_arr = malloc(sizeof(t_point) * data.wnd_wd);
+    if (!data.inter_arr)
         return (printf("arr allocation fails!!\n"));
     data.door_arr = malloc(sizeof(t_door) * data.doors_nbr);
     if (!data.door_arr)
         return (printf("doors arr allocation fails!!\n"));
     fill_doors_array(&data);
-    if (ft_create_window(&data))
-        return (-1);
     ft_mini_map(&data);
     mlx_loop_hook(data.mlx, animation, &data);
     mlx_key_hook(data.mlx, ft_move_plr, &data);
