@@ -85,7 +85,7 @@ void    reload(t_data *data)
 
 void    shut(t_data *data)
 {
-    if (data->gun.sht == 'S')
+    if (data && (data->gun.sht == 'S'))
     {
         if (data->gun.nbr_sht == 0)
             reload(data);

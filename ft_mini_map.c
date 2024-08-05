@@ -104,17 +104,20 @@ int ft_mini_map(t_data *data)
     int     ref[2];
     int     grd[2];
 
-    grd[0] = data->grd_wd / data->fact;
-    grd[1] = data->grd_ht / data->fact;
-    ref[1] = (int)((data->plr.y / data->fact) - 60);
-    ref[0] = (int)((data->plr.x / data->fact) - 60);
-    ind[1] = ref[1];
-    ind[0] = ref[0] - 1;
-    while (ind[1] < (int)((data->plr.y / data->fact) + 60))
+    if (data && data->map && data->map_img)
     {
-        if (data->map && data->map_img)
-            render_pixel(data, ref, ind, grd);
+        grd[0] = data->grd_wd / data->fact;
+        grd[1] = data->grd_ht / data->fact;
+        ref[1] = (int)((data->plr.y / data->fact) - 60);
+        ref[0] = (int)((data->plr.x / data->fact) - 60);
+        ind[1] = ref[1];
+        ind[0] = ref[0] - 1;
+        while (ind[1] < (int)((data->plr.y / data->fact) + 60))
+        {
+            if (data->map && data->map_img)
+                render_pixel(data, ref, ind, grd);
+        }
+        draw_triangle(data);
     }
-    draw_triangle(data);
     return (0);
 }

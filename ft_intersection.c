@@ -91,18 +91,21 @@ void  ft_inter(t_data *dt, t_point *inter, double angle)
     t_point     h_inter;
     t_point     v_inter;
 
-    hypo.x = hor_inter(dt, \
-        &h_inter, angle);
-    hypo.y = ver_inter(dt, \
-        &v_inter, angle);
-    if (hypo.x <= hypo.y)
+    if (dt && inter && dt->map)
     {
-        inter->x = h_inter.x;
-        inter->y = h_inter.y; 
-    }
-    else
-    {
-        inter->x = v_inter.x;
-        inter->y = v_inter.y;
+        hypo.x = hor_inter(dt, \
+            &h_inter, angle);
+        hypo.y = ver_inter(dt, \
+            &v_inter, angle);
+        if (hypo.x <= hypo.y)
+        {
+            inter->x = h_inter.x;
+            inter->y = h_inter.y; 
+        }
+        else
+        {
+            inter->x = v_inter.x;
+            inter->y = v_inter.y;
+        }
     }
 }

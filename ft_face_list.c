@@ -29,28 +29,34 @@ static t_face   *new_node()
 
 static void set_dir(t_data *data, t_face *tmp, int i)
 {
-    if (tmp->fix == 'Y')
+    if (data && tmp && data->inter_arr)
     {
-        if (data->inter_arr[i].y < data->plr.y)
-            tmp->dir = 'N';
-        else if (data->plr.y < data->inter_arr[i].y)
-            tmp->dir = 'S';
-    }
-    else
-    {
-        if (data->inter_arr[i].x < data->plr.x)
-            tmp->dir = 'E';
-        else if (data->plr.x < data->inter_arr[i].x)
-            tmp->dir = 'W';
+        if (tmp->fix == 'Y')
+        {
+            if (data->inter_arr[i].y < data->plr.y)
+                tmp->dir = 'N';
+            else if (data->plr.y < data->inter_arr[i].y)
+                tmp->dir = 'S';
+        }
+        else
+        {
+            if (data->inter_arr[i].x < data->plr.x)
+                tmp->dir = 'E';
+            else if (data->plr.x < data->inter_arr[i].x)
+                tmp->dir = 'W';
+        }
     }
 }
 
 static void set_fix(t_face *tmp, t_point *arr, t_point *ref, int i)
 {
-    if (arr[i].y != ref->y)
-            tmp->fix = 'X';
-    else if (arr[i].x != ref->x)
-        tmp->fix = 'Y';
+    if (tmp && arr && ref)
+    {
+        if (arr[i].y != ref->y)
+                tmp->fix = 'X';
+        else if (arr[i].x != ref->x)
+            tmp->fix = 'Y';
+    }
 }
 
 
@@ -58,22 +64,21 @@ static int  new_face(t_data *dt, t_face **tp, t_point *rf, int i)
 {
     t_face      *new;
 
+    if (!dt || !tp || !dt->inter_arr)
+        return (-1);
     rf->x = dt->inter_arr[i].x;
     rf->y = dt->inter_arr[i].y;
-    if (tp)
+    new = new_node();
+    if (!new)
+        return (-1);
+    if ((*tp) == NULL)
+        (*tp) = new;
+    else
     {
-        new = new_node();
-        if (!new)
-            return (-1);
-        if ((*tp) == NULL)
-            (*tp) = new;
-        else
-        {
-            (*tp)->next = new;
-            (*tp) = (*tp)->next;
-        }
+        (*tp)->next = new;
+        (*tp) = (*tp)->next;
     }
-    return (-1 * (tp == NULL));
+    return (0);
 }
 
 t_face  *face_list(t_data *data)
@@ -87,7 +92,7 @@ t_face  *face_list(t_data *data)
     tmp[0] = NULL;
     new_face(data, &tmp[0], &ref, 0);
     (tmp[1] = tmp[0], arr = data->inter_arr);
-    while (tmp[0] && (++i < data->wnd_wd))
+    while (data && arr && tmp[0] && (++i < data->wnd_wd))
     {
         if (tmp[0]->fix == 'U')
             set_fix(tmp[0], arr, &ref, i);
