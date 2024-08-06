@@ -6,11 +6,20 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/21 15:22:54 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/04 16:24:30 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/05 15:40:25 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "cube.h"
+
+static void set_fix(t_face *tmp, t_point *arr, \
+    t_point *ref, int i)
+{
+    if (arr[i].y != ref->y)
+        tmp->fix = 'X';
+    else if (arr[i].x != ref->x)
+        tmp->fix = 'Y';
+}
 
 static t_face   *new_node()
 {
@@ -29,38 +38,24 @@ static t_face   *new_node()
 
 static void set_dir(t_data *data, t_face *tmp, int i)
 {
-    if (data && tmp && data->inter_arr)
+    if (tmp->fix == 'Y')
     {
-        if (tmp->fix == 'Y')
-        {
-            if (data->inter_arr[i].y < data->plr.y)
-                tmp->dir = 'N';
-            else if (data->plr.y < data->inter_arr[i].y)
-                tmp->dir = 'S';
-        }
-        else
-        {
-            if (data->inter_arr[i].x < data->plr.x)
-                tmp->dir = 'E';
-            else if (data->plr.x < data->inter_arr[i].x)
-                tmp->dir = 'W';
-        }
+        if (data->inter_arr[i].y < data->plr.y)
+            tmp->dir = 'N';
+        else if (data->plr.y < data->inter_arr[i].y)
+            tmp->dir = 'S';
+    }
+    else
+    {
+        if (data->inter_arr[i].x < data->plr.x)
+            tmp->dir = 'E';
+        else if (data->plr.x < data->inter_arr[i].x)
+            tmp->dir = 'W';
     }
 }
 
-static void set_fix(t_face *tmp, t_point *arr, t_point *ref, int i)
-{
-    if (tmp && arr && ref)
-    {
-        if (arr[i].y != ref->y)
-                tmp->fix = 'X';
-        else if (arr[i].x != ref->x)
-            tmp->fix = 'Y';
-    }
-}
-
-
-static int  new_face(t_data *dt, t_face **tp, t_point *rf, int i)
+static int  new_face(t_data *dt, t_face **tp, \
+    t_point *rf, int i)
 {
     t_face      *new;
 
@@ -91,17 +86,18 @@ t_face  *face_list(t_data *data)
     i = -1;
     tmp[0] = NULL;
     new_face(data, &tmp[0], &ref, 0);
-    (tmp[1] = tmp[0], arr = data->inter_arr);
+    tmp[1] = tmp[0];
+    arr = data->inter_arr;
     while (data && arr && tmp[0] && (++i < data->wnd_wd))
     {
         if (tmp[0]->fix == 'U')
             set_fix(tmp[0], arr, &ref, i);
-        else if (((arr[i].x != ref.x) || (arr[i].y != ref.y)) && \
-            new_face(data, &tmp[0], &ref, i))
+        else if (((arr[i].x != ref.x) || (arr[i].y != \
+            ref.y)) && new_face(data, &tmp[0], &ref, i))
             return (ft_free_lst(tmp[1]), NULL);
-        if ((tmp[0]->dir == 'U') && \
-            (((tmp[0]->fix == 'X') && (arr[i].x == ref.x)) || \
-            ((tmp[0]->fix == 'Y') && (arr[i].y == ref.y))))
+        if ((tmp[0]->dir == 'U') && (((tmp[0]->fix == 'X') && \
+            (arr[i].x == ref.x)) || ((tmp[0]->fix == 'Y') && \
+                (arr[i].y == ref.y))))
             set_dir(data, tmp[0], i);
         tmp[0]->rays++;
     }

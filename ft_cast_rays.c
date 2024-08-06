@@ -20,13 +20,14 @@ void    ft_cast_rays(t_data *data)
     double   angle;
     t_point  inter;
 
-    x = data->wnd_wd;
-    rad = (M_PI / 180);
-    if (data && data->inter_arr)
+    if (data && data->map && data->inter_arr)
     {
+        x = data->wnd_wd;
+        rad = (M_PI / 180);
         incr = ((60 * rad) / data->wnd_wd);
         angle = real_angle(data->plr.d - (30 * rad));
         ft_mini_map(data);
+        ft_free_lst(data->face_lst);
         while (x--)
         {
             angle = real_angle(angle);

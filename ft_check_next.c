@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 00:57:57 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/04 16:39:20 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/05 15:25:45 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,15 +33,18 @@ int  ft_check_next(t_data *data, double x, double y)
     int     y1;
     char    **map;
 
-    map = data->map;
-    x1 = ((x + 3 - (6 * (x < data->plr.x))) / \
-        data->grd_wd);
-    y1 = ((y + 3 - (6 * (y < data->plr.y))) / \
-        data->grd_ht);
-    if ((map[y1][x1] != '0'))
+    if (data && data->map)
     {
-        if (map[y1][x1] == '1')
-            return (1);
+        map = data->map;
+        x1 = ((x + 3 - (6 * (x < data->plr.x))) / \
+            data->grd_wd);
+        y1 = ((y + 3 - (6 * (y < data->plr.y))) / \
+            data->grd_ht);
+        if ((map[y1][x1] != '0'))
+        {
+            if (map[y1][x1] == '1')
+                return (1);
+        }
     }
     return (0);
 }

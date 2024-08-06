@@ -29,7 +29,7 @@ int ft_create_window(t_data  *data)
 {
     if (!(data->mlx = mlx_init(data->wnd_wd, data->wnd_ht, \
         "cube", 0)))
-        return (printf("data->mlx fails!!\n"));
+        return (printf("init mlx fails!!\n"));
     if (!(data->map_img = mlx_new_image(data->mlx, 120, 120)))
         return (printf("data->map_img fails!!\n"));
     if (!(data->proj_img = mlx_new_image(data->mlx, \
@@ -79,14 +79,13 @@ int main()
         return (-1);
     data.inter_arr = malloc(sizeof(t_point) * data.wnd_wd);
     if (!data.inter_arr)
-        return (printf("arr allocation fails!!\n"));
+        return (printf("inter_arr allocation fails!!\n"));
     data.door_arr = malloc(sizeof(t_door) * data.doors_nbr);
     if (!data.door_arr)
-        return (printf("doors arr allocation fails!!\n"));
-    fill_doors_array(&data);
+        return (printf("door_arr allocation fails!!\n"));
+    fill_door_array(&data);
     ft_mini_map(&data);
     mlx_loop_hook(data.mlx, animation, &data);
-    mlx_key_hook(data.mlx, ft_move_plr, &data);
     mlx_loop(data.mlx);
     return (0);
 }

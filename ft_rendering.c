@@ -5,26 +5,29 @@ static int get_x_offset(t_data *data, t_face *tmp, double x)
     int     x_offset;
 
     x_offset = 0;
-    if (tmp->fix == 'X')
-        x_offset = ((int)((int)data->inter_arr[(int)x].y % \
-            data->grd_ht));
-    else if (tmp->fix == 'Y')
-        x_offset = ((int)((int)data->inter_arr[(int)x].x % \
-            data->grd_wd));
+    if (data && data->inter_arr && tmp)
+    {
+        if (tmp->fix == 'X')
+            x_offset = ((int)((int)data->inter_arr[(int)x].y % \
+                data->grd_ht));
+        else if (tmp->fix == 'Y')
+            x_offset = ((int)((int)data->inter_arr[(int)x].x % \
+                data->grd_wd));
+    }
     return (x_offset);
 } 
 
 static void indices(t_data *data, t_face *tmp, int *tab, int x)
 {
-    if (data && data->inter_arr && tmp && tab)
+    if (data && data->inter_arr && tab)
     {
-        if (tmp->fix == 'X')
+        if (tmp && tmp->fix == 'X')
         {
             tab[1] = (data->inter_arr[x].y / data->grd_ht);
             tab[0] = (data->inter_arr[x].x / data->grd_wd) - \
                 1 * (data->inter_arr[x].x < data->plr.x);
         }
-        else if (tmp->fix == 'Y')
+        else if (tmp && tmp->fix == 'Y')
         {
             tab[0] = (data->inter_arr[x].x / data->grd_wd);
             tab[1] = (data->inter_arr[x].y / data->grd_ht) - \

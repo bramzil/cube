@@ -1,22 +1,22 @@
 # include "cube.h"
 
-static void open_door(t_data *data, t_door *door)
+static void open_door(t_door *door)
 {
     if (2 < door->var)
     {
-        door->var -= 1;
+        door->var -= 2;
         door->state = 'M';
     }
     else
         door->state = 'O';
 }
 
-static void close_door(t_data *data, t_door *door)
+static void close_door(t_door *door)
 {
     if (door->var < 32)
     {
         door->state = 'M';
-        door->var += 1;
+        door->var += 2;
     }
     else
         door->state = 'C';
@@ -42,7 +42,7 @@ t_door  *get_door(t_data *data, int i, int j)
     int         k;
 
     k = -1;
-    if (data->map[j][i] == 'd')
+    if (data && data->map && data->map[j][i] == 'd')
     {
         while (++k < data->doors_nbr)
         {
@@ -59,18 +59,18 @@ int ft_door_ctl(t_data *data)
     int         i;
     int         bl;
     double      dist;
-    t_door      *array;
 
     i = -1;
     bl = 0;
-    array = data->door_arr;
-    while (++i < data->doors_nbr)
+    while (data && data->door_arr && (++i < data->doors_nbr))
     {
         dist = get_distance(data, i);
-        if ((dist < 90) && (array[i].state != 'O') && ++bl)
-            open_door(data, &array[i]);
-        else if ((90 < dist) && (array[i].state != 'C') && ++bl)
-            close_door(data, &array[i]);
+        if ((dist < 90) && \
+            (data->door_arr[i].state != 'O') && ++bl)
+            open_door( &data->door_arr[i]);
+        else if ((90 < dist) && \
+            (data->door_arr[i].state != 'C') && ++bl)
+            close_door(&data->door_arr[i]);
         if (bl)
         {
             ft_clear_image(data->proj_img);

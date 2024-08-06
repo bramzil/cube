@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/03 10:22:31 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/04 19:34:01 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/06 08:42:09 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ mlx_image_t *load_gun_sprite(mlx_t *mlx, char *path)
     image = NULL;
     texture = mlx_load_png(path);
     if (texture)
+    {
         image = mlx_texture_to_image(mlx, texture);
+        mlx_delete_texture(texture);
+    }
     return (image);
 }
 

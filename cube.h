@@ -5,7 +5,7 @@
 # include <math.h>
 # include <stdlib.h>
 # include <stdio.h>
-# include <MLX42.h>
+# include "MLX42/MLX42.h"
 # include <stdarg.h>
 
 typedef struct  s_point
@@ -76,10 +76,11 @@ typedef struct  s_data
     mlx_image_t     *proj_img;
 }               t_data;
 
-void        ft_move_plr(mlx_key_data_t key, void *arg);
+void        ft_move_plr(int key, t_data *arg);
 int         ft_free_lst(t_face *lst);
 int         ft_door_ctl(t_data *data);
-void        animation(void *arg);
+void        animation(t_data *data);
+void        animate_plr(t_data *data);
 int         init_gun_arr(t_data *data);
 int         ft_mini_map(t_data *data);
 int         delete_imgs(t_data *data, int size);
@@ -90,7 +91,7 @@ double      get_height(t_data *data, int i);
 void        shut(t_data *data);
 t_face      *face_list(t_data *data);
 void        ft_render_wall(t_data *data);
-void        fill_doors_array(t_data *data);
+void        fill_door_array(t_data *data);
 t_door      *get_door(t_data *data, int i, int j);
 double      real_angle(double angle);
 int         ft_check_next(t_data *data, double x, double y);

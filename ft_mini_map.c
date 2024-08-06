@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/04 15:07:11 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/04 18:25:35 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/05 14:21:03 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ static int  draw_triangle(t_data *data)
     double      angle;
 
     i = -1;
-    while (data->map_img && (++i < 5))
+    while (++i < 5)
     {
         j = -1;
         angle = real_angle(data->plr.d - (M_PI / 2));
