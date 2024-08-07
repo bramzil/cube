@@ -94,7 +94,7 @@ void        ft_render_wall(t_data *data);
 void        fill_door_array(t_data *data);
 t_door      *get_door(t_data *data, int i, int j);
 double      real_angle(double angle);
-int         ft_check_next(t_data *data, double x, double y);
+int         ft_check_next(t_data *data, double angle);
 void        ft_inter(t_data *data, t_point *inter, double angle);
 
 # endif

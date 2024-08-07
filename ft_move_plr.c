@@ -18,19 +18,23 @@ static void ft_for_back_ward(t_data *data, int keycode)
 {
     double      x;
     double      y;
+    double      angle;
 
     if (data && keycode == 87)
     {
         x = data->plr.x + (5 * cos(data->plr.d));
         y = data->plr.y + (5 * sin(data->plr.d) * -1);
+        if (data && !ft_check_next(data, data->plr.d))
+            (data->plr.x = x, data->plr.y = y);
     }
     if (data && keycode == 83)
     {
+        angle = real_angle(data->plr.d + M_PI);
         x = data->plr.x + (5 * cos(data->plr.d) * -1);
         y = data->plr.y + (5 * sin(data->plr.d));
+        if (data && !ft_check_next(data, angle))
+            (data->plr.x = x, data->plr.y = y);
     }
-    if (data && !ft_check_next(data, x, y))
-        (data->plr.x = x, data->plr.y = y);
 }
 
 static void ft_go_left_right(t_data *data, int keycode)
@@ -45,6 +49,8 @@ static void ft_go_left_right(t_data *data, int keycode)
             (M_PI / 2));
         x = data->plr.x + (double)(5 * cos(angle));
         y = data->plr.y + (double)(5 * sin(angle) * -1);
+        if (data && !ft_check_next(data, angle))
+            (data->plr.x = x, data->plr.y = y);
     }
     else if (data && keycode == 68)
     {
@@ -52,9 +58,9 @@ static void ft_go_left_right(t_data *data, int keycode)
             (M_PI + (M_PI / 2)));
         x = data->plr.x + (double)(5 * cos(angle));
         y = data->plr.y + (double)(5 * sin(angle) * -1);
+        if (data && !ft_check_next(data, angle))
+            (data->plr.x = x, data->plr.y = y);
     }
-    if (data && !ft_check_next(data, x, y))
-        (data->plr.x = x, data->plr.y = y);
 }
 
 void ft_move_plr(int key, t_data *data)
