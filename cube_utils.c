@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/30 08:29:18 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/06 12:27:02 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/08 08:51:37 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ void  animate_plr(t_data *data)
         ft_move_plr(263, data);
     if (mlx_is_key_down(data->mlx, 264))
         ft_move_plr(264, data);
-    if (mlx_is_key_down(data->mlx, 265) )
+    if (mlx_is_key_down(data->mlx, 265))
         ft_move_plr(265, data);
 }
 
@@ -51,8 +51,11 @@ void    animation(t_data *data)
     static int  counter;
     
     key = -1;
-    (mlx_is_key_down(data->mlx, 32) && (key = 32));
-    ((key == 32) && (data->gun.sht = 'S'));
+    if (mlx_is_key_down(data->mlx, 32))
+        data->gun.sht = 'S';
+    if (mlx_is_mouse_down(data->mlx, \
+        MLX_MOUSE_BUTTON_LEFT))
+        ft_mouse(data);
     if (counter == 0)
     {
         ft_door_ctl(data);

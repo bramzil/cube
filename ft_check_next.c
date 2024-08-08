@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/31 00:57:57 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/07 16:50:35 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/08 08:05:56 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int  check_dir(t_data *data, double angle)
     int             i;
     int             j;
     int             h;
+    t_door          *door;
     t_point         start;
 
     h = 0;
@@ -24,9 +25,13 @@ static int  check_dir(t_data *data, double angle)
     start.y = data->plr.y;
     while (++h < 13)
     {
-        i = (start.x + (h * cos(angle))) / data->grd_wd;
-        j = (start.y + (h * sin(angle) * -1)) / data->grd_ht;
-        if (data->map[j][i] == '1')
+        i = (start.x + (h * cos(angle))) / \
+            data->grd_wd;
+        j = (start.y + (h * sin(angle) * -1)) / \
+            data->grd_ht;
+        door = get_door(data, i, j);
+        if ((data->map[j][i] == '1') || (door && \
+            (door->state != 'O')))
             return (1);
     }
     return (0);

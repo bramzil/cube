@@ -11,7 +11,8 @@ SRCS			= 	main.c \
 					ft_check_next.c \
 					ft_door_ctl.c \
 					ft_gun_sprite.c \
-					cube_utils.c
+					cube_utils.c \
+					ft_mouse.c
 
 
 ######################### object files ###############################

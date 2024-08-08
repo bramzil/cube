@@ -81,6 +81,7 @@ int         ft_free_lst(t_face *lst);
 int         ft_door_ctl(t_data *data);
 void        animation(t_data *data);
 void        animate_plr(t_data *data);
+void        ft_mouse(t_data *data);
 int         init_gun_arr(t_data *data);
 int         ft_mini_map(t_data *data);
 int         delete_imgs(t_data *data, int size);
