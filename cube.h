@@ -84,6 +84,7 @@ void        animate_plr(t_data *data);
 void        ft_mouse(t_data *data);
 int         init_gun_arr(t_data *data);
 int         ft_mini_map(t_data *data);
+int32_t     *get_texture_arr(t_data *data, char *path);
 int         delete_imgs(t_data *data, int size);
 void        ft_cast_rays(t_data *data);
 void        ft_clear_image(mlx_image_t *img);

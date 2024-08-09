@@ -1,30 +1,5 @@
 # include "cube.h"
 
-int32_t *get_texture(int width, int height, int32_t color)
-{
-    int         i;
-    int         j;
-    int32_t     *texture;
-
-    j = -1;
-    texture = (int32_t *)malloc(sizeof(int32_t) * \
-        (width * height));
-    if (!texture)
-        return (NULL);
-    while (++j < height)
-    {
-        i = -1;
-        while (++i < width)
-        {
-            if ((i % 16 == 0) || (j % 16 == 0))
-                texture[(j * width) + i] = 0x000000ff;
-            else
-                texture[(j * width) + i] = color;
-        }
-    }
-    return (texture);
-}
-
 int ft_create_window(t_data  *data)
 {
     if (!(data->mlx = mlx_init(data->wnd_wd, data->wnd_ht, \
@@ -68,15 +43,15 @@ int main()
     data.gun.sht = 'N';
     data.gun.nbr_sht = 10;
     data.plr.h = data.wnd_ht / 2;
-    data.w_text.tb = get_texture(data.grd_wd, data.grd_ht, 0xff0000ff);
     data.d_text.wd = 64;
     data.d_text.ht = 64;
-    data.d_text.tb = get_texture(data.grd_wd, data.grd_ht, 0xf0f0f022);
     data.map = ft_split(map, ' ');
     if (!data.map)
         return (printf("ft_split fails!!\n"));
     if (ft_create_window(&data))
         return (-1);
+    data.d_text.tb = get_texture_arr(&data, "door.png");
+    data.w_text.tb = get_texture_arr(&data, "wall.png");
     data.inter_arr = malloc(sizeof(t_point) * data.wnd_wd);
     if (!data.inter_arr)
         return (printf("inter_arr allocation fails!!\n"));
