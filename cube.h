@@ -5,7 +5,7 @@
 # include <math.h>
 # include <stdlib.h>
 # include <stdio.h>
-# include "MLX42/MLX42.h"
+# include <MLX42.h>
 # include <stdarg.h>
 
 typedef struct  s_point

@@ -23,11 +23,11 @@ OBJS			= $(SRCS:%c=%o)
 
 NAME			= cube
 
-LINK			= -framework Cocoa -framework OpenGL -framework IOKit
+# LINK			= -framework Cocoa -framework OpenGL -framework IOKit
 
-# LINK			= -lmlx42 -lglfw -lm
+LINK			= -lmlx42 -lglfw -lm
 
-LIBS			= MLX42/libmlx42.a -lglfw3
+# LIBS			= MLX42/libmlx42.a -lglfw3
 
 
 ############################# rules ###################################
