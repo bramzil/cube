@@ -54,19 +54,17 @@ static void set_dir(t_data *data, t_face *tmp, int i)
     }
 }
 
-static int  new_face(t_data *dt, t_face **tp, \
+static int new_face(t_data *dt, t_face **tp, \
     t_point *rf, int i)
 {
     t_face      *new;
 
-    if (!dt || !tp || !dt->inter_arr)
-        return (-1);
     rf->x = dt->inter_arr[i].x;
     rf->y = dt->inter_arr[i].y;
     new = new_node();
     if (!new)
         return (-1);
-    if ((*tp) == NULL)
+    else if ((*tp) == NULL)
         (*tp) = new;
     else
     {
@@ -76,30 +74,32 @@ static int  new_face(t_data *dt, t_face **tp, \
     return (0);
 }
 
-t_face  *face_list(t_data *data)
+int  face_list(t_data *data)
 {
     int         i;
     t_point     ref;
     t_point     *arr;
-    t_face      *tmp[2];
+    t_face      *tmp;
 
     i = -1;
-    tmp[0] = NULL;
-    new_face(data, &tmp[0], &ref, 0);
-    tmp[1] = tmp[0];
+    tmp = NULL;
     arr = data->inter_arr;
-    while (data && arr && tmp[0] && (++i < data->wnd_wd))
+    free_lnkd_lst(data->face_lst);
+    if (new_face(data, &tmp, &ref, 0))
+        return ((data->face_lst = NULL), -1);
+    data->face_lst = tmp;
+    while (data && arr && tmp && (++i < data->wnd_wd))
     {
-        if (tmp[0]->fix == 'U')
-            set_fix(tmp[0], arr, &ref, i);
-        else if (((arr[i].x != ref.x) || (arr[i].y != \
-            ref.y)) && new_face(data, &tmp[0], &ref, i))
-            return (ft_free_lst(tmp[1]), NULL);
-        if ((tmp[0]->dir == 'U') && (((tmp[0]->fix == 'X') && \
-            (arr[i].x == ref.x)) || ((tmp[0]->fix == 'Y') && \
+        if (tmp->fix == 'U')
+            set_fix(tmp, arr, &ref, i);
+        else if (((arr[i].x != ref.x) || (arr[i].y != ref.y)) && \
+            new_face(data, &tmp, &ref, i))
+            return (-1);
+        if ((tmp->dir == 'U') && (((tmp->fix == 'X') && \
+            (arr[i].x == ref.x)) || ((tmp->fix == 'Y') && \
                 (arr[i].y == ref.y))))
-            set_dir(data, tmp[0], i);
-        tmp[0]->rays++;
+            set_dir(data, tmp, i);
+        tmp->rays++;
     }
-    return (tmp[1]);
+    return (0);
 }

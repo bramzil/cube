@@ -17,12 +17,12 @@ int32_t *get_texture_arr(t_data *data, char *path)
 {
     int         i;
     int         j;
-    int32_t     byte[4];
+    int         byte[4];
     int32_t     *pix_arr;
     mlx_image_t *image;
 
     j = 0;
-    i = -1;
+    i = 0;
     image = load_image(data, path);
     if (!image)
         return (NULL);
@@ -30,14 +30,15 @@ int32_t *get_texture_arr(t_data *data, char *path)
         image->height);
     if (!pix_arr)
         return (NULL);
-    while (++i < (image->width * image->height * 4))
+    while (i < (image->width * image->height * 4))
     {
-        byte[0] = image->pixels[i];
-        byte[1] = image->pixels[++i];
-        byte[2] = image->pixels[++i];
-        byte[3] = image->pixels[++i];
-        pix_arr[j++] = ((byte[3] << 24) | \
-            (byte[2] << 16) | (byte[1] << 8) | byte[0]);
+        byte[0] = image->pixels[i + 0];
+        byte[1] = image->pixels[i + 1];
+        byte[2] = image->pixels[i + 2];
+        byte[3] = image->pixels[i + 3];
+        pix_arr[j++] = ((byte[0] << 24) | \
+            (byte[1] << 16) | (byte[2] << 8) | byte[3]);
+        i += 4;
     }
     mlx_delete_image(data->mlx, image);
     return (pix_arr);

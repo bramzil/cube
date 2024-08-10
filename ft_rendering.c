@@ -43,12 +43,12 @@ static void  put_pixel(t_data *data, t_point *pos, int *ind)
     if (data && data->map && data->proj_img)
     {
         map = data->map;
-        if (map[ind[1]][ind[0]] == '1' && data->w_text.tb)
+        if (map[ind[1]][ind[0]] == '1')
             mlx_put_pixel(data->proj_img, pos->x, pos->y, \
-                data->w_text.tb[ind[2]]);
-        else if (map[ind[1]][ind[0]] == 'd' && data->d_text.tb)
+                data->W_texture[ind[2]]);
+        else if (map[ind[1]][ind[0]] == 'd')
             mlx_put_pixel(data->proj_img, pos->x, pos->y, \
-                data->d_text.tb[ind[2]]);
+                data->D_texture[ind[2]]);
     }
 }
 

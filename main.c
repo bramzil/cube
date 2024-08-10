@@ -4,18 +4,27 @@ int ft_create_window(t_data  *data)
 {
     if (!(data->mlx = mlx_init(data->wnd_wd, data->wnd_ht, \
         "cube", 0)))
-        return (printf("init mlx fails!!\n"));
-    if (!(data->map_img = mlx_new_image(data->mlx, 120, 120)))
-        return (printf("data->map_img fails!!\n"));
-    if (!(data->proj_img = mlx_new_image(data->mlx, \
-        data->wnd_wd, data->wnd_ht)))
-        return (printf("data->proj_img fails!!\n"));
-    if (mlx_image_to_window(data->mlx, data->proj_img, 0, 0))
-        return (printf("data->proj_img fails!!\n"));
-    if (mlx_image_to_window(data->mlx, data->map_img, 10, 10))
-        return (printf("data->wall__img fails!!\n"));
-    if (init_gun_arr(data))
-        return (printf("init gun array fails!!"));
+        return (put_error(data, "init mlx fails!!\n", 3));
+    if (!(data->map_img = mlx_new_image(data->mlx, 120, 120)) || \
+        (mlx_image_to_window(data->mlx, data->map_img, \
+        10, 10) == - 1))
+    {
+        mlx_terminate(data->mlx);
+        return (put_error(data, "init map_img fails!!\n", 3));
+    }        
+    if (!(data->proj_img = mlx_new_image(data->mlx, data->wnd_wd, \
+        data->wnd_ht)) ||(mlx_image_to_window(data->mlx, \
+        data->proj_img, 0, 0) == -1))
+    {
+        mlx_delete_image(data->mlx, data->map_img);
+        mlx_terminate(data->mlx);
+        return (put_error(data, "init proj_img fails!!\n", 3));
+    }
+    if (init_gun(data))
+    {
+        mlx_terminate(data->mlx);
+        return (put_error(data, "init gun fails!!", 3));
+    }
     return (0);
 }
 
@@ -37,28 +46,21 @@ int main()
     data.wnd_wd = 1100;
     data.doors_nbr = 3;
     data.face_lst = NULL;
-    data.w_text.wd = 64;
-    data.w_text.ht = 64;
-    data.gun.i = 0;
-    data.gun.sht = 'N';
-    data.gun.nbr_sht = 10;
     data.plr.h = data.wnd_ht / 2;
-    data.d_text.wd = 64;
-    data.d_text.ht = 64;
     data.map = ft_split(map, ' ');
     if (!data.map)
         return (printf("ft_split fails!!\n"));
-    if (ft_create_window(&data))
-        return (-1);
-    data.d_text.tb = get_texture_arr(&data, "door.png");
-    data.w_text.tb = get_texture_arr(&data, "wall.png");
     data.inter_arr = malloc(sizeof(t_point) * data.wnd_wd);
     if (!data.inter_arr)
-        return (printf("inter_arr allocation fails!!\n"));
+        return (put_error(&data, "inter_arr allocation fails!!\n", 1));
     data.door_arr = malloc(sizeof(t_door) * data.doors_nbr);
     if (!data.door_arr)
-        return (printf("door_arr allocation fails!!\n"));
+        return (put_error(&data, "door_arr allocation fails!!\n", 2));
     fill_door_array(&data);
+    if (ft_create_window(&data))
+        return (-1);
+    data.D_texture = get_texture_arr(&data, "door.png");
+    data.W_texture = get_texture_arr(&data, "wall.png");
     ft_mini_map(&data);
     mlx_loop_hook(data.mlx, animation, &data);
     mlx_loop(data.mlx);

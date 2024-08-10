@@ -27,7 +27,6 @@ void    ft_cast_rays(t_data *data)
         incr = ((60 * rad) / data->wnd_wd);
         angle = real_angle(data->plr.d - (30 * rad));
         ft_mini_map(data);
-        ft_free_lst(data->face_lst);
         while (x--)
         {
             angle = real_angle(angle);
@@ -36,7 +35,8 @@ void    ft_cast_rays(t_data *data)
             data->inter_arr[x].y = inter.y;
             angle += incr;
         }
-        data->face_lst = face_list(data);
+        if (face_list(data))
+            clean_up(data);
         ft_render_wall(data);
     }
 }

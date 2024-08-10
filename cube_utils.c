@@ -12,17 +12,17 @@
 
 # include "cube.h"
 
-int ft_free_lst(t_face *lst)
+int put_error(t_data *data, char *des, int set)
 {
-    t_face      *tmp;
-    
-    while (lst && lst->next)
-    {
-        tmp = lst;
-        lst = lst->next;
-        free (tmp);
-    }
-    return (0);
+    if (1 <= set)
+        free_map_text(data);
+    if (2 <= set)
+        free(data->inter_arr);
+    if (3 <= set)
+       free(data->door_arr);
+    while (des && *des)
+        write(2, des++, 1);
+    return (-1);
 }
 
 void  animate_plr(t_data *data)

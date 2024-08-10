@@ -30,14 +30,6 @@ typedef struct  s_plr
     double          y;
 }               t_plr;
 
-typedef struct  s_texture
-{
-    int             wd;
-    int             ht;
-    int32_t         *tb;
-    mlx_texture_t   *texture;
-}               t_texture;
-
 typedef struct  s_face
 {
     char            dir;
@@ -63,12 +55,15 @@ typedef struct  s_data
     int             grd_ht;
     int             grd_wd;
     int             doors_nbr;
+    double          fact;
     t_plr           plr;
     t_gun           gun;
-    double          fact;
     mlx_t           *mlx;
-    t_texture       w_text;
-    t_texture       d_text;
+    int32_t         *N_texture;
+    int32_t         *S_texture;
+    int32_t         *W_texture;
+    int32_t         *E_texture;
+    int32_t         *D_texture;
     t_point         *inter_arr;
     t_door          *door_arr;
     t_face          *face_lst;
@@ -77,21 +72,24 @@ typedef struct  s_data
 }               t_data;
 
 void        ft_move_plr(int key, t_data *arg);
-int         ft_free_lst(t_face *lst);
+void        free_lnkd_lst(t_face *lst);
 int         ft_door_ctl(t_data *data);
 void        animation(t_data *data);
 void        animate_plr(t_data *data);
 void        ft_mouse(t_data *data);
-int         init_gun_arr(t_data *data);
+int         init_gun(t_data *data);
 int         ft_mini_map(t_data *data);
+void        clean_up(t_data *data);
 int32_t     *get_texture_arr(t_data *data, char *path);
-int         delete_imgs(t_data *data, int size);
+void        delete_imgs(t_data *data, int size);
 void        ft_cast_rays(t_data *data);
 void        ft_clear_image(mlx_image_t *img);
 char        **ft_split(char const *s, char c);
+int         put_error(t_data *data, char *des, int set);
 double      get_height(t_data *data, int i);
 void        shut(t_data *data);
-t_face      *face_list(t_data *data);
+int         face_list(t_data *data);
+mlx_image_t *load_image(t_data *data, char *path);
 void        ft_render_wall(t_data *data);
 void        fill_door_array(t_data *data);
 t_door      *get_door(t_data *data, int i, int j);

@@ -13,7 +13,8 @@ SRCS			= 	main.c \
 					ft_gun_sprite.c \
 					cube_utils.c \
 					ft_mouse.c \
-					ft_texture.c
+					ft_texture.c \
+					ft_clean_up.c
 
 
 ######################### object files ###############################
