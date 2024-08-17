@@ -1,4 +1,4 @@
-# include "libft/libft.h"
+# include "../libft/libft.h"
 # include <fcntl.h>
 # include <stdio.h>
 
@@ -64,22 +64,4 @@ char *get_line(int fd)
     else
         line = all;
     return (line);
-}
-
-# include <stdio.h>
-
-int main()
-{
-    int     fd;
-    char    *line;
-
-    fd = open("map.cub", O_RDONLY, 0222);
-    if (fd < 0)
-        return (printf("fail to open file\n"), 0);
-    while ((line = get_line(fd)))
-    {
-        printf("|%s|", line);
-        free(line);
-    }  
-    return (0);
 }
