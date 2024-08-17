@@ -6,9 +6,8 @@ int is_only_allowed_chars(char *s_map)
 
     i = -1;
     while (s_map && s_map[++i])
-        if (!ft_strchar("10NSWE \n", s_map[i]))
-            return (ft_putstr_fd("there is an allowed" \
-                "charecter in the map", 2), -1);
+        if (ft_strchar("10NSWE \n", s_map[i]) == -1)
+            return (ft_putstr_fd("disallowed charecter!!\n", 2), -1);
     return (0);
 }
 

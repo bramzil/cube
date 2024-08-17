@@ -1,24 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/03 19:27:09 by bramzil           #+#    #+#             */
-/*   Updated: 2024/01/18 12:44:50 by bramzil          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-# include "libft.h"
+# include "libft/libft.h"
 # include <fcntl.h>
+# include <stdio.h>
 
-
-# ifndef BUFFER_SIZE
 # define BUFFER_SIZE 5
-# endif
 
-static char    *read_line(char *rst, int fd)
+char    *read_line(char *rst, int fd)
 {
     char    *all;
     char    *tmp;
@@ -49,7 +35,7 @@ static char    *read_line(char *rst, int fd)
 }
 
 
-char *get_next_line(int fd)
+char *get_line(int fd)
 {
     char        *all;
     char        *tmp;
@@ -78,4 +64,22 @@ char *get_next_line(int fd)
     else
         line = all;
     return (line);
+}
+
+# include <stdio.h>
+
+int main()
+{
+    int     fd;
+    char    *line;
+
+    fd = open("map.cub", O_RDONLY, 0222);
+    if (fd < 0)
+        return (printf("fail to open file\n"), 0);
+    while ((line = get_line(fd)))
+    {
+        printf("|%s|", line);
+        free(line);
+    }  
+    return (0);
 }

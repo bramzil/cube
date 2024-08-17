@@ -60,7 +60,7 @@ int add_texture(char **texture, char *value)
     if (!(*texture))
             *texture = ft_strdup(value);
     else
-        return (ft_putstr_fd("A texture is daplicated!!\n", 2), -1);
+        return (ft_putstr_fd("A texture is duplicated!!\n", 2), -1);
     return (0);
 }
 
@@ -110,7 +110,7 @@ int add_color(int32_t *color, char *value)
     }
     else
         return (free_2d_arr(clms), \
-            ft_putstr_fd("A color is daplicated!!\n", 2), -1);
+            ft_putstr_fd("A color is duplicated!!\n", 2), -1);
     return (free_2d_arr(clms), 0);
 }
 
@@ -166,26 +166,47 @@ int collect_map(t_data *data, char **s_map, char *line)
     return (free(tmp), 0);
 }
 
+int is_there_an_ident(char *line)
+{
+    if (ft_strnstr(line, "NO ", ft_strlen(line)))
+        return (1);
+    else if (ft_strnstr(line, "SO ", ft_strlen(line)))
+        return (1);
+    else if (ft_strnstr(line, "WE ", ft_strlen(line)))
+        return (1);
+    else if (ft_strnstr(line, "EA ", ft_strlen(line)))
+        return (1);
+    else if (ft_strnstr(line, "F ", ft_strlen(line)))
+        return (1);
+    else if (ft_strnstr(line, "C ", ft_strlen(line)))
+        return (1);
+    return (0);
+}
+
 int set_element(t_data *data, char **s_map, char *line)
 {
-    char        *ref;
+    char        *ptr;
     char        **tmp;
     
-    ref = line;
-    line = ft_strtrim(line, "\n");
-    if (!only_spaces(line))
+    ptr = ft_strtrim(line, "\n");
+    if (ptr && !only_spaces(ptr))
         return (0);
-    tmp = ft_split(line, ' ');
-    if (!tmp)
-        return (ft_putstr_fd("splite line failed!!\n", 2), -1);
-    if (tmp[1] && tmp[2])
-        return (free_2d_arr(tmp), \
-            ft_putstr_fd("line elmts more than two!!\n", 2), -1);
-    if (tmp[0] && tmp[1] && add_element(data, tmp[0], tmp[1]))
+    if (is_there_an_ident(ptr))
+    {
+        tmp = ft_split(ptr, ' ');
+        if (!tmp)
+            return (ft_putstr_fd("splite line failed!!\n", 2), -1);
+        if (tmp[0] && tmp[1] && tmp[2])
+        {
+            return (free_2d_arr(tmp), \
+                ft_putstr_fd("line elmts more than two!!\n", 2), -1);
+        }
+        if (tmp[0] && tmp[1] && add_element(data, tmp[0], tmp[1]))
+            return (free_2d_arr(tmp), -1);
+    }
+    else if (collect_map(data, s_map, line))
         return (free_2d_arr(tmp), -1);
-    else if (tmp[0] && !tmp[1] && collect_map(data, s_map, ref))
-        return (free_2d_arr(tmp), -1);
-    return (free_2d_arr(tmp), 0);
+    return (0);
 }
 
 int read_map(t_data *data, char **s_map, char *file)
@@ -203,7 +224,7 @@ int read_map(t_data *data, char **s_map, char *file)
             break;
         if (set_element(data, s_map, line))
             return (free (line), -1);
-        free (line);
+        free(line);
     }
     return (0);
 }

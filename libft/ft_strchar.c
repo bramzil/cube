@@ -14,11 +14,14 @@
 
 int	ft_strchar(char *s, char c)
 {
-	if (!s)
-		return (0);
-	while (*s && (*s != c))
-		s++;
-	if (*s && *s == c)
-		return (1);
-	return (0);
+	int		i;
+
+	i = 0;
+	while (s && s[i])
+	{
+		if (s[i] == c)
+			return (i);
+		i++;
+	}
+	return (-1);
 }

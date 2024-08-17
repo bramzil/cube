@@ -21,12 +21,6 @@
 # include <unistd.h>
 # include <limits.h>
 
-//buffer size will be used by get next line.
-
-# ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 5
-# endif
-
 //type definition for data structure used in bonus functions.
 
 typedef struct s_list
