@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 19:27:09 by bramzil           #+#    #+#             */
-/*   Updated: 2024/01/18 12:44:50 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/17 13:42:25 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,17 +30,13 @@ static char    *read_line(char *rst, int fd)
     while (0 < r_bytes)
     {
         tmp = all;
-        r_bytes = read(fd, buf, BUFFER_SIZE);
-        if (r_bytes == -1)
-            return (free(tmp), \
-                write(2, "call sys read fun fail!!\n", 26), NULL);
+        if ((r_bytes = read(fd, buf, BUFFER_SIZE)) == -1)
+            return (free(tmp), write(2, "read fun failed!!\n", 19), NULL);
         if (!r_bytes)
             return (all);
         buf[r_bytes] = '\0';
-        all = ft_strjoin(all, buf);
-        if (!all)
-            return (free(tmp), \
-                write(2, "fail to join all & buf!!\n", 26), NULL);
+        if (!(all = ft_strjoin(all, buf)))
+            return (free(tmp), write(2, "ft_strjoin failed!!\n", 21), NULL);
         if (-1 < ft_strchar(all, '\n'))
             break;
         free (tmp);
@@ -52,7 +48,6 @@ static char    *read_line(char *rst, int fd)
 char *get_next_line(int fd)
 {
     char        *all;
-    char        *tmp;
     int         l_end;
     char        *line;
     static char *rst[255];
@@ -64,13 +59,11 @@ char *get_next_line(int fd)
     l_end = ft_strchar(all, '\n');
     if (-1 < l_end && all[l_end + 1])
     {
-        rst[fd] = ft_substr(all, (l_end  + 1), \
-            (ft_strlen(all) - l_end - 1));
-        if (!rst[fd])
-            return (free(all), \
-                write(2, "ft_substr failed!!\n", 20), NULL);
-        line = ft_substr(all, 0, (l_end + 1));
-        if (!line)
+        if (!(rst[fd] = ft_substr(all, (l_end  + 1), \
+            (ft_strlen(all) - l_end - 1))))
+            return (free(all), write(2, "ft_substr " \
+                "failed!!\n", 20), NULL);
+        if (!(line = ft_substr(all, 0, (l_end + 1))))
             return (free(all), free(rst[fd]), \
                 write(2, "ft_substr failed!!\n", 20), NULL);
         free (all);

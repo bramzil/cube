@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 10:25:36 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/15 13:07:43 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/17 14:13:21 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,8 @@ int check_extention(char *file)
     len = ft_strlen(file);
     tmp = ft_substr(file, (len - 4), 4);
     if (!tmp || ft_strncmp(tmp, ".cub", 4))
-    {
-        ft_putstr_fd("Invalid map file's extention!!\n", 2);
-        return (free(tmp), -1);
-    }
+        return (free(tmp), write(2, "Invalid " \
+            "map file's extention!!\n", 32), -1);
     return (0);
 }
 
@@ -60,7 +58,7 @@ int add_texture(char **texture, char *value)
     if (!(*texture))
             *texture = ft_strdup(value);
     else
-        return (ft_putstr_fd("A texture is duplicated!!\n", 2), -1);
+        return (write(2, "A texture is duplicated!!\n", 27), -1);
     return (0);
 }
 
@@ -83,10 +81,10 @@ int convert_color(char **clms, int32_t *tab)
     while (clms && clms[++i])
     {
         if (is_only_digits(clms[i]))
-            return (ft_putstr_fd("clr mst b only dgts!!\n", 2), -1);
+            return (write(2, "clr mst b only dgts!!\n", 23), -1);
         tab[i] = ft_atoi(clms[i]);
         if ((3 < ft_strlen(clms[i])) || (tab[i] < 0) || (255 < tab[i]))
-            return (ft_putstr_fd("clr vl mst b btwn 0 and 255!!\n", 2), -1);
+            return (write(2, "clr vl mst b btwn 0 and 255!!\n", 31), -1);
     }
     return (0);
 }
@@ -96,12 +94,11 @@ int add_color(int32_t *color, char *value)
     char        **clms;
     int32_t     tab[3];
 
-    clms = ft_split(value, ',');
-    if (!clms)
-        return (ft_putstr_fd("splite clms failed!!\n", 2), -1);
+    if (!(clms = ft_split(value, ',')))
+        return (write(2, "splite clms failed!!\n", 22), -1);
     else if (!clms[0] || !clms[1] || !clms[2] || clms[3])
         return (free_2d_arr(clms), \
-            ft_putstr_fd("color coloms must be three!!\n", 2), -1);
+            write(2, "color coloms must be three!!\n", 30), -1);
     if (*color == -1)
     {
         if (convert_color(clms, tab))
@@ -110,25 +107,20 @@ int add_color(int32_t *color, char *value)
     }
     else
         return (free_2d_arr(clms), \
-            ft_putstr_fd("A color is duplicated!!\n", 2), -1);
+            write(2, "A color is duplicated!!\n", 25), -1);
     return (free_2d_arr(clms), 0);
 }
 
 int add_element(t_data *data, char *id, char *value)
 {
     if (is_valid_id(id))
-        return (ft_putstr_fd("Invalid elemt id!!!\n", 2), -1);
-     if (!ft_strncmp("NO", id, 2)&& \
+        return (write(2, \
+            "Invalid elemt id!!!\n", 21), -1);
+    else if (!ft_strncmp("NO", id, 2)&& \
         add_texture(&data->north_text.path, value))
         return (-1);
     else if (!ft_strncmp("SO", id, 2)&& \
         add_texture(&data->south_text.path, value))
-        return (-1);
-    else if (!ft_strncmp("WE", id, 2) && \
-        add_texture(&data->west_text.path, value))
-        return (-1);
-    else if (!ft_strncmp("EA", id, 2) && \
-        add_texture(&data->east_text.path, value))
         return (-1);
     else if (!ft_strncmp("C", id, 2) && \
         add_color(&data->c_color, value))
@@ -136,15 +128,21 @@ int add_element(t_data *data, char *id, char *value)
     else if (!ft_strncmp("F", id, 2) && \
         add_color(&data->f_color, value))
         return (-1);
+    else if (!ft_strncmp("WE", id, 2) && \
+        add_texture(&data->west_text.path, value))
+        return (-1);
+    else if (!ft_strncmp("EA", id, 2) && \
+        add_texture(&data->east_text.path, value))
+        return (-1);
     return (0);
 }
 
-int is_all_elmts_there(t_data *data)
+int is_all_elmts_set(t_data *data)
 {
     if (!data->north_text.path || \
-        !data->south_text.path || \
         !data->west_text.path || \
         !data->east_text.path || \
+        !data->south_text.path || \
         (data->f_color == -1) || \
         (data->c_color == -1))
         return (-1);
@@ -155,7 +153,7 @@ int collect_map(t_data *data, char **s_map, char *line)
 {
     char        *tmp;
 
-    if (is_all_elmts_there(data))
+    if (is_all_elmts_set(data))
         return (ft_putstr_fd("an element missed or " \
             "map misordered!!\n", 2), -1);
     tmp = *s_map;
@@ -183,30 +181,29 @@ int is_there_an_ident(char *line)
     return (0);
 }
 
-int set_element(t_data *data, char **s_map, char *line)
+int set_elements(t_data *data, char **s_map, char *line)
 {
     char        *ptr;
     char        **tmp;
     
-    ptr = ft_strtrim(line, "\n");
-    if (ptr && !only_spaces(ptr))
+    tmp = NULL;
+    if (!(ptr = ft_strtrim(line, "\n")))
+        return (write(2, "ft_strtrim failed!!\n", 21), -1);
+    else if (!only_spaces(ptr))
         return (0);
-    if (is_there_an_ident(ptr))
+    else if (is_there_an_ident(ptr))
     {
-        tmp = ft_split(ptr, ' ');
-        if (!tmp)
-            return (ft_putstr_fd("splite line failed!!\n", 2), -1);
+        if (!(tmp = ft_split(ptr, ' ')))
+            return (write(2, "splite line failed!!\n", 22), -1);
         if (tmp[0] && tmp[1] && tmp[2])
-        {
             return (free_2d_arr(tmp), \
-                ft_putstr_fd("line elmts more than two!!\n", 2), -1);
-        }
+                write(2, "line elmts more than two!!\n", 28), -1);
         if (tmp[0] && tmp[1] && add_element(data, tmp[0], tmp[1]))
             return (free_2d_arr(tmp), -1);
     }
     else if (collect_map(data, s_map, line))
         return (free_2d_arr(tmp), -1);
-    return (0);
+    return (free_2d_arr(tmp), 0);
 }
 
 int read_map(t_data *data, char **s_map, char *file)
@@ -214,15 +211,13 @@ int read_map(t_data *data, char **s_map, char *file)
     int         fd;
     char        *line;
 
-    fd = open(file, O_RDONLY, 0222);
-    if (fd < 0)
-        return (ft_putstr_fd("fail to open map file!!\n", 2), -1);
+    if ((fd = open(file, O_RDONLY, 0222)) < 0)
+        return (write(2, "fail to open map file!!\n", 25), -1);
     while (1)
     {
-        line = get_next_line(fd);
-        if (!line)
+        if (!(line = get_next_line(fd)))
             break;
-        if (set_element(data, s_map, line))
+        if (set_elements(data, s_map, line))
             return (free (line), -1);
         free(line);
     }
@@ -239,9 +234,9 @@ int ft_parsing(t_data *data, char *file)
         return (-1);
     if (read_map(data, &s_map, file))
         return (-1);
-    if (is_all_elmts_there(data) || !s_map)
-        return (ft_putstr_fd("An element " \
-            "is missed!!\n", 2), -1);
+    if (is_all_elmts_set(data) || !s_map)
+        return (write(2, "An element " \
+            "is missed!!\n", 24), -1);
     if (parse_map(data, s_map))
         return (-1);
     return (0);
@@ -257,7 +252,7 @@ int main(int ac, char **av)
     data.west_text.path = NULL;
     data.east_text.path = NULL;
     if (ac != 2)
-        return (printf("args nbr must be two!!\n"));
+        return (printf("Pass only map file as arg!!\n"));
     if (ft_parsing(&data, av[1]))
         return (0);
     printf("texture north path, %s\n", data.north_text.path);

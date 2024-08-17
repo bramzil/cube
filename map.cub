@@ -1,11 +1,9 @@
 NO      "./wall.png"
 SO      "./wall.png"
 WE      "./wall.png"
-EA      "./wall.png"
+EA      "./wall.png" 
 
-C 240,10,1
+C 240,10,255
 F       240,10,13
 
-111   111
-100001
-111111
+qwq12
