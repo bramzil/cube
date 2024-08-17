@@ -82,10 +82,7 @@ int parse_map(t_data *data, char *s_map)
     i = -1;
     if (is_only_allowed_chars(s_map))
         return (-1);
-    data->map.arr = create_square_map(s_map);
-    if (!data->map.arr)
+    if (!(data->map.arr = create_square_map(s_map)))
         return (-1);
-    while (data->map.arr[++i])
-        printf("|%s|\n", data->map.arr[i]);
     return (0);
 }

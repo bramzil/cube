@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 10:25:36 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/17 14:13:21 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/17 15:06:59 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int check_extention(char *file)
     if (!tmp || ft_strncmp(tmp, ".cub", 4))
         return (free(tmp), write(2, "Invalid " \
             "map file's extention!!\n", 32), -1);
-    return (0);
+    return (free(tmp), 0);
 }
 
 int only_spaces(char *line)
@@ -56,7 +56,7 @@ int is_valid_id(char *id)
 int add_texture(char **texture, char *value)
 {
     if (!(*texture))
-            *texture = ft_strdup(value);
+        *texture = ft_strdup(value);
     else
         return (write(2, "A texture is duplicated!!\n", 27), -1);
     return (0);
@@ -137,7 +137,7 @@ int add_element(t_data *data, char *id, char *value)
     return (0);
 }
 
-int is_all_elmts_set(t_data *data)
+int is_other_elmts_set(t_data *data)
 {
     if (!data->north_text.path || \
         !data->west_text.path || \
@@ -153,14 +153,13 @@ int collect_map(t_data *data, char **s_map, char *line)
 {
     char        *tmp;
 
-    if (is_all_elmts_set(data))
-        return (ft_putstr_fd("an element missed or " \
-            "map misordered!!\n", 2), -1);
+    if (is_other_elmts_set(data))
+        return (write(2, "an element missed or " \
+            "map misordered!!\n", 39), -1);
     tmp = *s_map;
-    *s_map = ft_strjoin(*s_map, line);
-    if (!(*s_map))
-        return (free(tmp), ft_putstr_fd("collect map" \
-            " fails!!\n", 2), -1);
+    if (!(*s_map = ft_strjoin(*s_map, line)))
+        return (free(tmp), write(2, "collect map" \
+            " fails!!\n", 21), -1);
     return (free(tmp), 0);
 }
 
@@ -190,20 +189,21 @@ int set_elements(t_data *data, char **s_map, char *line)
     if (!(ptr = ft_strtrim(line, "\n")))
         return (write(2, "ft_strtrim failed!!\n", 21), -1);
     else if (!only_spaces(ptr))
-        return (0);
+        return (free(ptr), 0);
     else if (is_there_an_ident(ptr))
     {
         if (!(tmp = ft_split(ptr, ' ')))
-            return (write(2, "splite line failed!!\n", 22), -1);
+            return (write(2, "splite line failed!!\n", 22), \
+                free(ptr), -1);
         if (tmp[0] && tmp[1] && tmp[2])
-            return (free_2d_arr(tmp), \
+            return (free_2d_arr(tmp), free(ptr),\
                 write(2, "line elmts more than two!!\n", 28), -1);
         if (tmp[0] && tmp[1] && add_element(data, tmp[0], tmp[1]))
-            return (free_2d_arr(tmp), -1);
+            return (free_2d_arr(tmp), free(ptr), -1);
     }
     else if (collect_map(data, s_map, line))
-        return (free_2d_arr(tmp), -1);
-    return (free_2d_arr(tmp), 0);
+        return (free_2d_arr(tmp), free(ptr), -1);
+    return (free_2d_arr(tmp), free(ptr), 0);
 }
 
 int read_map(t_data *data, char **s_map, char *file)
@@ -218,12 +218,20 @@ int read_map(t_data *data, char **s_map, char *file)
         if (!(line = get_next_line(fd)))
             break;
         if (set_elements(data, s_map, line))
-            return (free (line), -1);
+            return (free(line), -1);
         free(line);
     }
     return (0);
 }
 
+void    free_elements(t_data *data)
+{
+    free (data->north_text.path);
+    free (data->south_text.path);
+    free (data->west_text.path);
+    free (data->east_text.path);
+    free_2d_arr(data->map.arr);
+}
 
 int ft_parsing(t_data *data, char *file)
 {
@@ -234,17 +242,23 @@ int ft_parsing(t_data *data, char *file)
         return (-1);
     if (read_map(data, &s_map, file))
         return (-1);
-    if (is_all_elmts_set(data) || !s_map)
-        return (write(2, "An element " \
-            "is missed!!\n", 24), -1);
+    if (is_other_elmts_set(data) || !s_map)
+        return ( \
+            write(2, "An element is missed!!\n", 24), -1);
     if (parse_map(data, s_map))
-        return (-1);
-    return (0);
+        return (free_elements(data), free(s_map), -1);
+    return (free(s_map), 0);
 }
+void    leak(void)
+{
+    system("leaks       a.out");
+}
+
 int main(int ac, char **av)
 {
     t_data      data;
     
+    atexit(leak);
     data.c_color = -1;
     data.f_color = -1;
     data.north_text.path = NULL;
@@ -261,5 +275,6 @@ int main(int ac, char **av)
     printf("texture east path, %s\n", data.east_text.path);
     printf("color floor value, %x\n", data.f_color);
     printf("color Ceil value, %x\n", data.c_color);
+    free_elements(&data);
     return (0);
 }

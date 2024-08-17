@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/03 19:27:09 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/17 13:42:25 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/17 14:30:59 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,9 +37,9 @@ static char    *read_line(char *rst, int fd)
         buf[r_bytes] = '\0';
         if (!(all = ft_strjoin(all, buf)))
             return (free(tmp), write(2, "ft_strjoin failed!!\n", 21), NULL);
+        free (tmp);
         if (-1 < ft_strchar(all, '\n'))
             break;
-        free (tmp);
     }
     return (all);
 }
