@@ -74,6 +74,54 @@ char    **create_square_map(char *s_map)
     return (free_2d_arr(tmp), sqr_map);
 }
 
+int is_valid_border(char *line)
+{
+    int     i;
+
+    i = -1;
+    while (line && line[++i])
+    {
+        if (ft_strchar("1 ", line[i]) < 0)
+        {
+            write(2, "this charcter '", 22);
+            wriet(2, line[i], 1);
+            write(2, "' disallowed in borders!!\n", 27);
+            return (1);
+        }
+    }
+    return (0);
+}
+
+int check_extremities(char *line)
+{
+    int         i;
+
+    i = -1;
+    while (line && line[++i])
+    {
+        if ((line[i] != 32) && (line[i] < 9 || 13 < line[i]))
+            if (line[i] != '1')
+                write(2, "An invalid extremity!!\n", 24);
+    }
+}
+
+int check_map_structure(char **sqr_map)
+{
+    int         i;
+    int         j;
+
+    j = 0;
+    if (is_valid_border(sqr_map[j]))
+        return (-1);
+    while (sqr_map && sqr_map[(++j) + 1])
+    {
+
+    }
+    if (is_valid_border(sqr_map[j]))
+        return (-1);
+    return (0);
+}
+
 int parse_map(t_data *data, char *s_map)
 {
     int         i;
@@ -84,5 +132,6 @@ int parse_map(t_data *data, char *s_map)
         return (-1);
     if (!(data->map.arr = create_square_map(s_map)))
         return (-1);
+    
     return (0);
 }

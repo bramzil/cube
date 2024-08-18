@@ -6,7 +6,7 @@
 /*   By: bramzil <bramzil@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/08/15 10:25:36 by bramzil           #+#    #+#             */
-/*   Updated: 2024/08/17 15:06:59 by bramzil          ###   ########.fr       */
+/*   Updated: 2024/08/17 15:55:41 by bramzil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -275,6 +275,9 @@ int main(int ac, char **av)
     printf("texture east path, %s\n", data.east_text.path);
     printf("color floor value, %x\n", data.f_color);
     printf("color Ceil value, %x\n", data.c_color);
+    int     i = -1;
+    while (data.map.arr[++i])
+        printf("|%s|\n", data.map.arr[i]);
     free_elements(&data);
     return (0);
 }
